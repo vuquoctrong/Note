@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:id="@+id/rlmain"
+        android:orientation="horizontal"
+        android:background="@drawable/menu_dropdown_panel_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/ivicon"
+            android:src="@drawable/ic_launcher"
+            android:layout_centerVertical="true"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+        <TextView
+            android:id="@+id/tvnote"
+            android:layout_centerVertical="true"
+            android:text="Note"
+            android:textSize="16dp"
+            android:layout_toRightOf="@id/ivicon"
+            android:textColor="#fffffc"
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btnnewtab"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_action_new"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+    </RelativeLayout>
+    <GridView
+        android:layout_below="@id/rlmain"
+        android:padding="16dp"
+        android:id="@+id/gvmain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="2"
+        android:horizontalSpacing="10dp"
+        android:verticalSpacing="10dp">
+    </GridView>
+</RelativeLayout>

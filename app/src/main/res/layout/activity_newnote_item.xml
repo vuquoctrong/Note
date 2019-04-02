@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:id="@+id/rlmain"
+        android:orientation="horizontal"
+        android:background="@drawable/menu_dropdown_panel_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/btnback"
+            android:background="@drawable/ic_action_previous_item"
+            android:layout_centerVertical="true"
+            android:layout_width="16dp"
+            android:layout_height="28dp"
+            />
+        <ImageView
+            android:layout_toRightOf="@id/btnback"
+            android:id="@+id/ivicon"
+            android:src="@drawable/ic_launcher"
+            android:layout_centerVertical="true"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+        <TextView
+            android:id="@+id/tvtitle"
+            android:layout_centerVertical="true"
+            android:text="Title"
+            android:textSize="16dp"
+            android:layout_toRightOf="@id/ivicon"
+            android:textColor="#fffffc"
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btnsavetab"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/abc_ic_cab_done_holo_dark"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+        <Button
+        android:id="@+id/btnColorBackground"
+        android:layout_toLeftOf="@id/btnsavetab"
+        android:background="@drawable/ic_action_view_as_grid"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp" />
+        <Button
+            android:id="@+id/btnCamera"
+            android:layout_toLeftOf="@id/btnColorBackground"
+            android:background="@drawable/ic_action_camera"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tvTimes"
+        android:text="01/04/2019 14:16"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/rlmain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
