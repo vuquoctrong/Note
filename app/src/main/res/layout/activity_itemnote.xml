@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:id="@+id/rlmain"
+        android:orientation="horizontal"
+        android:background="@drawable/menu_dropdown_panel_note"
+        android:layout_alignParentStart="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/btnback"
+            android:background="@drawable/ic_action_previous_item"
+            android:layout_centerVertical="true"
+            android:layout_width="@dimen/db_16"
+            android:layout_height="@dimen/db_28"
+            />
+        <ImageView
+            android:layout_toRightOf="@id/btnback"
+            android:id="@+id/ivicon"
+            android:src="@drawable/ic_launcher"
+            android:layout_centerVertical="true"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48" />
+        <TextView
+            android:id="@+id/tvtitle"
+            android:layout_centerVertical="true"
+            android:text="Title"
+            android:textSize="@dimen/db_16"
+            android:layout_toRightOf="@id/ivicon"
+            android:textColor="#fffffc"
+            android:layout_marginLeft="@dimen/dn_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btnnewnote"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/abc_ic_menu_moreoverflow_normal_holo_light"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/db_16"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48" />
+        <Button
+            android:id="@+id/btnsavenote"
+            android:layout_toLeftOf="@id/btnnewnote"
+            android:background="@drawable/abc_ic_cab_done_holo_dark"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/db_16"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48" />
+
+        <Button
+            android:id="@+id/btnColorBackground"
+            android:layout_toLeftOf="@id/btnsavenote"
+            android:background="@drawable/ic_action_view_as_grid"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/db_16"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48" />
+        <Button
+            android:id="@+id/btnCamera"
+            android:layout_toLeftOf="@id/btnColorBackground"
+            android:background="@drawable/ic_action_camera"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/db_16"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_marginTop="@dimen/db_16"
+        android:layout_below="@id/rlmain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/llmenu">
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="3/4/2019"
+                android:layout_marginTop="@dimen/db_16"
+                android:textSize="@dimen/db_28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:hint="@string/Title"
+                android:textSize="@dimen/db_28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/llmenu"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/menu_dropdown_panel_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/ibpreviouitem"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/db_48"
+            android:src="@drawable/ic_action_previous_item"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"/>
+        <ImageButton
+            android:id="@+id/ibshare"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/db_48"
+            android:src="@drawable/ic_action_share"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"/>
+        <ImageButton
+            android:id="@+id/ibdiscard"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/db_48"
+            android:src="@drawable/ic_action_discard"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"/>
+        <ImageButton
+            android:id="@+id/ibnextitem"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/db_48"
+            android:src="@drawable/ic_action_next_item"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"/>
+    </LinearLayout>
+
+</RelativeLayout>

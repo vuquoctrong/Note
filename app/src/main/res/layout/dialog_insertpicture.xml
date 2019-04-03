@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="500dp"
+    android:layout_height="200dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/tv_insertpicture"
+        android:text="@string/tv_insertpicture"
+        android:textSize="@dimen/textSize28"
+        android:textColor="@color/colortext"
+        android:padding="@dimen/dn_8"
+        android:layout_marginLeft="@dimen/db_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_action_camera_dark"
+                android:layout_marginLeft="32dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp" />
+            <TextView
+                android:textSize="32sp"
+                android:text="Take Photo"
+                android:layout_marginLeft="@dimen/db_16"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_action_picture"
+                android:layout_marginLeft="32dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp" />
+            <TextView
+                android:textSize="32sp"
+                android:text="Choose Photo"
+                android:layout_marginLeft="@dimen/db_16"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

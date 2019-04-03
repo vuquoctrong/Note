@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="@dimen/db_200"
+    android:layout_height="@dimen/db_200"
+    android:padding="@dimen/dn_8"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tvtitle"
+                android:text="Title"
+                android:textSize="@dimen/db_28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:src="@drawable/ic_action_alarms_select"
+                android:layout_width="@dimen/db_48"
+                android:layout_height="@dimen/db_48"
+                android:layout_alignParentRight="true"/>
+            <TextView
+                android:id="@+id/tvone"
+                android:background="@color/btncolorblue"
+                android:layout_marginTop="@dimen/db_16"
+                android:layout_below="@id/tvtitle"
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+            <TextView
+                android:id="@+id/tvnote"
+                android:text="Note"
+                android:layout_below="@id/tvone"
+                android:textSize="@dimen/db_28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tvcontent"
+                android:text="aaaaaaaaaaa"
+                android:layout_below="@id/tvnote"
+                android:textSize="@dimen/db_28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tvdate"
+                android:text="aaaaaaaaaaa"
+                android:textSize="@dimen/textSize"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

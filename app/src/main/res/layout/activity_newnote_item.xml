@@ -13,24 +13,24 @@
             android:id="@+id/btnback"
             android:background="@drawable/ic_action_previous_item"
             android:layout_centerVertical="true"
-            android:layout_width="16dp"
-            android:layout_height="28dp"
+            android:layout_width="@dimen/db_16"
+            android:layout_height="@dimen/db_28"
             />
         <ImageView
             android:layout_toRightOf="@id/btnback"
             android:id="@+id/ivicon"
             android:src="@drawable/ic_launcher"
             android:layout_centerVertical="true"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48" />
         <TextView
             android:id="@+id/tvtitle"
             android:layout_centerVertical="true"
             android:text="Title"
-            android:textSize="16dp"
+            android:textSize="@dimen/db_16"
             android:layout_toRightOf="@id/ivicon"
             android:textColor="#fffffc"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="@dimen/dn_8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Button
@@ -38,34 +38,59 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/abc_ic_cab_done_holo_dark"
             android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
+            android:layout_marginRight="@dimen/db_16"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48" />
         <Button
         android:id="@+id/btnColorBackground"
         android:layout_toLeftOf="@id/btnsavetab"
         android:background="@drawable/ic_action_view_as_grid"
         android:layout_centerVertical="true"
-        android:layout_marginRight="16dp"
-        android:layout_width="48dp"
-        android:layout_height="48dp" />
+        android:layout_marginRight="@dimen/db_16"
+        android:layout_width="@dimen/db_48"
+        android:layout_height="@dimen/db_48" />
         <Button
             android:id="@+id/btnCamera"
             android:layout_toLeftOf="@id/btnColorBackground"
             android:background="@drawable/ic_action_camera"
             android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
+            android:layout_marginRight="@dimen/db_16"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48" />
     </RelativeLayout>
-    <TextView
-        android:id="@+id/tvTimes"
-        android:text="01/04/2019 14:16"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:textSize="16sp"
-        android:layout_marginTop="8dp"
+    <ScrollView
+        android:id="@+id/scrollViewNN"
         android:layout_below="@id/rlmain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tvdate"
+                android:text="01/04/2019 14:16"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/db_16"
+                android:textSize="@dimen/db_16"
+                android:layout_marginTop="@dimen/db_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/ettitle"
+                android:layout_below="@id/tvdate"
+                android:layout_marginTop="@dimen/db_16"
+                android:layout_marginLeft="@dimen/db_16"
+                android:hint="Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/etnote"
+                android:layout_below="@id/ettitle"
+                android:layout_marginTop="@dimen/db_16"
+                android:layout_marginLeft="@dimen/db_16"
+                android:hint="Note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

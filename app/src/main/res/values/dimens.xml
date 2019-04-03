@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="dn_8">8dp</dimen>
+    <dimen name="db_16">16dp</dimen>
+    <dimen name="db_28">28dp</dimen>
+    <dimen name="db_200">200dp</dimen>
+    <dimen name="db_500">500dp</dimen>
+    <dimen name="db_48">48dp</dimen>
+
+    <dimen name="textSize">16sp</dimen>
+    <dimen name="textSize28">28sp</dimen>
+    <dimen name="db_marinleft">32sp</dimen>
+</resources>

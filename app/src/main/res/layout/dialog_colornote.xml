@@ -1,15 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_width="@dimen/db_500"
+    android:layout_height="@dimen/db_200"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <TextView
+        android:padding="@dimen/dn_8"
         android:id="@+id/tvcolor"
-        android:text="Choose Color"
-        android:textSize="28sp"
-        android:textColor="#00e1ff"
+        android:text="@string/Color"
+        android:layout_marginLeft="@dimen/db_16"
+        android:textSize="@dimen/textSize28"
+        android:textColor="@color/colortext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
+    <RelativeLayout
+        android:background="#a1a19c"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/btncolorwhite"
+            android:background="#ffffff"
+            android:layout_centerInParent="true"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48" />
+        <Button
+            android:id="@+id/btncolorblue"
+            android:background="@color/btncolorblue"
+            android:layout_toRightOf="@id/btncolorwhite"
+            android:layout_marginLeft="@dimen/db_48"
+            android:layout_centerInParent="true"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48" />
+        <Button
+            android:id="@+id/btncolorgold"
+            android:background="@color/btncolorgold"
+            android:layout_toRightOf="@id/btncolorblue"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/db_48"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48" />
+        <Button
+            android:id="@+id/btncolorpink"
+            android:background="#f188bc"
+            android:layout_toLeftOf="@id/btncolorwhite"
+            android:layout_marginRight="@dimen/db_48"
+            android:layout_centerInParent="true"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48" />
+        <Button
+            android:id="@+id/btncolormandarin"
+            android:background="@color/btncolormandarin"
+            android:layout_toLeftOf="@id/btncolorpink"
+            android:layout_marginRight="@dimen/db_48"
+            android:layout_centerInParent="true"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48" />
+    </RelativeLayout>
 </LinearLayout>
