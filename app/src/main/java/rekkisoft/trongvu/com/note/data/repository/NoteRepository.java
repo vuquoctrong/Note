@@ -1,34 +1,29 @@
-package rekkisoft.trongvu.com.note.model;
+package rekkisoft.trongvu.com.note.data.repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.Sort;
+import rekkisoft.trongvu.com.note.data.RealmManager;
+import rekkisoft.trongvu.com.note.data.model.Note;
 
-public class RealmManager {
-    private static RealmManager sInstance;
+public class NoteRepository {
     private Realm mRealm;
-    private List<Note> mNotes;
 
-    public static RealmManager getInstance() {
-        if (sInstance == null) {
-            sInstance = new RealmManager();
-        }
-        return sInstance;
+    public NoteRepository() {
+        this.mRealm = RealmManager.getInstance().getmRealm();
     }
 
-    private RealmManager() {
-        mRealm = Realm.getDefaultInstance();
-        mNotes = mRealm.where(Note.class)
-                .sort("mCreateDate", Sort.DESCENDING)
-                .findAll();
-    }
 
-    public void insertNote(Note note) {
-        mRealm.beginTransaction();
-        Note copyOfNote = mRealm.copyToRealm(note);
-        mRealm.commitTransaction();
+    public void insertNote(final Note note) {
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.insertOrUpdate(note);
+            }
+        });
     }
 
     public void deleteNote(final int position) {
@@ -40,13 +35,13 @@ public class RealmManager {
         mRealm.commitTransaction();
     }
 
-    public void addImageNote(Note note, String url ) {
+    public void addImageNote(Note note, String url) {
         mRealm.beginTransaction();
         note.getUrls().add(url);
         mRealm.commitTransaction();
     }
 
-    public void removeImageNote(Note note, int positon ) {
+    public void removeImageNote(Note note, int positon) {
         mRealm.beginTransaction();
         note.getUrls().remove(positon);
         mRealm.commitTransaction();
@@ -81,6 +76,7 @@ public class RealmManager {
     }
 
     public List<Note> getNotes() {
-        return mNotes;
+        ArrayList<Note> notes = new ArrayList<>(mRealm.where(Note.class).findAll());
+        return notes;
     }
 }

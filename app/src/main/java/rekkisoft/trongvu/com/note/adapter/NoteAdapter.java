@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rekkisoft.trongvu.com.note.R;
-import rekkisoft.trongvu.com.note.model.Note;
+import rekkisoft.trongvu.com.note.data.model.Note;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
@@ -20,10 +21,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     private List<Note> notes;
     private NoteOnclickListener noteOnclickListener;
 
-    public NoteAdapter(Context context, List<Note> notes,NoteOnclickListener noteOnclickListener) {
+    public NoteAdapter(Context context, NoteOnclickListener noteOnclickListener) {
         this.context = context;
-        this.notes = notes;
+        this.notes = new ArrayList<>();
         this.noteOnclickListener =noteOnclickListener;
+    }
+
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+        notifyDataSetChanged();
     }
 
     @NonNull
