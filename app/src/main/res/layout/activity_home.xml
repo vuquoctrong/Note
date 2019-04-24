@@ -36,6 +36,7 @@
             android:layout_height="@dimen/db_48" />
     </RelativeLayout>
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcNote"
         android:padding="@dimen/db_16"
         android:layout_below="@id/rlmain"
         android:layout_width="match_parent"

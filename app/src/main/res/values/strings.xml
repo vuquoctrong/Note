@@ -1,6 +1,23 @@
 <resources>
-    <string name="app_name">Note</string>
+    <string name="app_name">NoteTrong</string>
     <string name="Title">Note</string>
     <string name="Color">Choose Color</string>
     <string name="tv_insertpicture">Insert Picture</string>
+    <string-array name="date_day">
+        <item>Day</item>
+        <item>Today</item>
+        <item>Tomorrow</item>
+        <item>After Tomorrow</item>
+        <item>Other...</item>
+    </string-array>
+    <string-array name="date_hour">
+        <item>Time</item>
+        <item>08:00</item>
+        <item>10:00</item>
+        <item>12:00</item>
+        <item>14:00</item>
+        <item>16:00</item>
+
+        <item>Other...</item>
+    </string-array>
 </resources>

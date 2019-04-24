@@ -19,7 +19,7 @@
             />
         <ImageView
             android:layout_toRightOf="@id/btnback"
-            android:id="@+id/ivicon"
+            android:id="@+id/ivbackHome"
             android:src="@drawable/ic_launcher"
             android:layout_centerVertical="true"
             android:layout_width="@dimen/db_48"
@@ -29,7 +29,7 @@
             android:layout_centerVertical="true"
             android:text="Title"
             android:textSize="@dimen/db_16"
-            android:layout_toRightOf="@id/ivicon"
+            android:layout_toRightOf="@id/ivbackHome"
             android:textColor="#fffffc"
             android:layout_marginLeft="@dimen/dn_8"
             android:layout_width="wrap_content"
@@ -68,31 +68,6 @@
             android:layout_width="@dimen/db_48"
             android:layout_height="@dimen/db_48" />
     </RelativeLayout>
-
-    <ScrollView
-        android:layout_marginTop="@dimen/db_16"
-        android:layout_below="@id/rlmain"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/llmenu">
-        <RelativeLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:text="3/4/2019"
-                android:layout_marginTop="@dimen/db_16"
-                android:textSize="@dimen/db_28"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:hint="@string/Title"
-                android:textSize="@dimen/db_28"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-
-    </ScrollView>
 
     <LinearLayout
         android:id="@+id/llmenu"
@@ -134,5 +109,12 @@
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"/>
     </LinearLayout>
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/rlmain"
+        android:layout_above="@+id/llmenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ScrollView>
 
 </RelativeLayout>

@@ -1,96 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="match_parent">
+
     <RelativeLayout
         android:id="@+id/rlmain"
-        android:orientation="horizontal"
-        android:background="@drawable/menu_dropdown_panel_note"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu_dropdown_panel_note"
+        android:orientation="horizontal">
+
         <ImageButton
             android:id="@+id/btnback"
-            android:background="@drawable/ic_action_previous_item"
-            android:layout_centerVertical="true"
             android:layout_width="@dimen/db_16"
             android:layout_height="@dimen/db_28"
-            />
-        <ImageView
-            android:layout_toRightOf="@id/btnback"
-            android:id="@+id/ivicon"
-            android:src="@drawable/ic_launcher"
             android:layout_centerVertical="true"
+            android:background="@drawable/ic_action_previous_item" />
+
+        <ImageView
+            android:id="@+id/ivicon"
             android:layout_width="@dimen/db_48"
-            android:layout_height="@dimen/db_48" />
+            android:layout_height="@dimen/db_48"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/btnback"
+            android:src="@drawable/ic_launcher" />
+
         <TextView
             android:id="@+id/tvtitle"
-            android:layout_centerVertical="true"
-            android:text="Title"
-            android:textSize="@dimen/db_16"
-            android:layout_toRightOf="@id/ivicon"
-            android:textColor="#fffffc"
-            android:layout_marginLeft="@dimen/dn_8"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dn_8"
+            android:layout_toRightOf="@id/ivicon"
+            android:text="Title"
+            android:textColor="#fffffc"
+            android:textSize="@dimen/db_16" />
+
         <Button
             android:id="@+id/btnsavetab"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48"
             android:layout_alignParentRight="true"
-            android:background="@drawable/abc_ic_cab_done_holo_dark"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/db_16"
-            android:layout_width="@dimen/db_48"
-            android:layout_height="@dimen/db_48" />
+            android:background="@drawable/abc_ic_cab_done_holo_dark" />
+
         <Button
-        android:id="@+id/btnColorBackground"
-        android:layout_toLeftOf="@id/btnsavetab"
-        android:background="@drawable/ic_action_view_as_grid"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/db_16"
-        android:layout_width="@dimen/db_48"
-        android:layout_height="@dimen/db_48" />
+            android:id="@+id/btnColorBackground"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/db_16"
+            android:layout_toLeftOf="@id/btnsavetab"
+            android:background="@drawable/ic_action_view_as_grid" />
+
         <Button
             android:id="@+id/btnCamera"
-            android:layout_toLeftOf="@id/btnColorBackground"
-            android:background="@drawable/ic_action_camera"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/db_16"
-            android:layout_width="@dimen/db_48"
-            android:layout_height="@dimen/db_48" />
+            android:layout_toLeftOf="@id/btnColorBackground"
+            android:background="@drawable/ic_action_camera" />
     </RelativeLayout>
+
     <ScrollView
-        android:id="@+id/scrollViewNN"
-        android:layout_below="@id/rlmain"
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/rlmain">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
                 android:id="@+id/tvdate"
-                android:text="01/04/2019 14:16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/db_16"
-                android:textSize="@dimen/db_16"
                 android:layout_marginTop="@dimen/db_16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:text="01/04/2019 14:16"
+                android:textSize="@dimen/db_16" />
+
             <EditText
                 android:id="@+id/ettitle"
-                android:layout_below="@id/tvdate"
-                android:layout_marginTop="@dimen/db_16"
-                android:layout_marginLeft="@dimen/db_16"
-                android:hint="Title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/db_16"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="@dimen/db_16"
+                android:layout_below="@id/tvdate"
+                android:backgroundTint="#e4e4dd"
+                android:hint="Title"
+                android:textColorHint="#e4e4dd" />
             <EditText
                 android:id="@+id/etnote"
-                android:layout_below="@id/ettitle"
-                android:layout_marginTop="@dimen/db_16"
-                android:layout_marginLeft="@dimen/db_16"
-                android:hint="Note"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ettitle"
+                android:layout_marginLeft="@dimen/db_16"
+                android:layout_marginTop="@dimen/db_16"
+                android:backgroundTint="#e4e4dd"
+                android:hint="Note"
+                android:textColorHint="#e4e4dd" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_below="@id/etnote"
+                android:layout_width="wrap_content"
+                android:padding="@dimen/db_16"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/ivalarm"
+                    android:src="@drawable/ic_action_alarms_select"
+                    android:layout_width="@dimen/db_28"
+                    android:layout_height="@dimen/db_28" />
+                <TextView
+                    android:text="Alarm"
+                    android:layout_marginLeft="@dimen/dn_8"
+                    android:textSize="@dimen/textSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
+                <Spinner
+                    android:id="@+id/spndateday"
+                    android:layout_width="@dimen/db_64"
+                    android:layout_height="@dimen/db_64"
+                    android:entries="@array/date_day"
+                    >
+                </Spinner>
+                <Spinner
+                    android:id="@+id/spnhour"
+                    android:layout_width="@dimen/db_64"
+                    android:layout_height="@dimen/db_64"
+                    android:entries="@array/date_hour">
+                </Spinner>
+                <Button
+                    android:id="@+id/btnclosedSpinner"
+                    android:background="@drawable/ic_action_cancel"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp" />
+            </LinearLayout>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>
