@@ -10,6 +10,7 @@
         android:layout_alignParentStart="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <!--FIXME: id viết hoa các chữ cái đầu tvTitle-->
         <ImageButton
             android:id="@+id/btnback"
             android:background="@drawable/ic_action_previous_item"
@@ -17,6 +18,9 @@
             android:layout_width="@dimen/db_16"
             android:layout_height="@dimen/db_28"
             />
+        <!--FIXME: không bắt buộc nhưng nên để id ở đầu tiên-->
+        <!--FIXME: id này đổi lại tên thành ivBackHome-->
+        <!--FIXME: format code thì dùng ctrl + alt + l -->
         <ImageView
             android:layout_toRightOf="@id/btnback"
             android:id="@+id/ivbackHome"
