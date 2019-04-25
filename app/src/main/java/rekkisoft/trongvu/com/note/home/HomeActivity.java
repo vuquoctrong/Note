@@ -18,6 +18,7 @@ import rekkisoft.trongvu.com.note.adapter.NoteAdapter;
 import rekkisoft.trongvu.com.note.data.model.Note;
 import rekkisoft.trongvu.com.note.detail.DetailActivity;
 import rekkisoft.trongvu.com.note.new_note.NewNoteActivity;
+import rekkisoft.trongvu.com.note.utils.Define;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener
         , HomeViewImp, NoteAdapter.NoteOnclickListener {
@@ -64,22 +65,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void goToHome() {
+    public void goToNewNote() {
         Intent intent = new Intent(this, NewNoteActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_back, R.anim.anim_exit);
     }
 
     @Override
-    public void openDetailOnHome(int position) {
+    public void openDetailOnHome(int noteId) {
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(EXTRA_POSITION, position);
+        intent.putExtra(Define.NavigationKey.NOTE_ID, noteId);
         startActivity(intent);
+        finish();
     }
 
     @Override
-    public void onClickItem(int position) {
-        homePresenter.openDetailOnHome(position);
+    public void onClickItem(int noteId) {
+        openDetailOnHome(noteId);
     }
 
 }

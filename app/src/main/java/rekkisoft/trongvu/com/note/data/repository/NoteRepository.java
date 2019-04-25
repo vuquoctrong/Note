@@ -24,7 +24,7 @@ public class NoteRepository {
                 Number currentIdNum = realm.where(Note.class).max("id");
                 int nextId;
                 if (currentIdNum == null) {
-                    nextId = 1;
+                    nextId = 0;
                 } else {
                     nextId = currentIdNum.intValue() + 1;
                 }
@@ -62,12 +62,13 @@ public class NoteRepository {
     }
 
 
-    public void updateNote(Note note, String title, String content, Date createDate, boolean isAlarm) {
+    public void updateNote(Note note, String title, String content, Date createDate, boolean isAlarm,int color) {
         mRealm.beginTransaction();
         note.setTitle(title);
         note.setContent(content);
         note.setCreateDate(createDate);
         note.setAlarm(isAlarm);
+        note.setColor(color);
         mRealm.commitTransaction();
     }
 
@@ -87,4 +88,5 @@ public class NoteRepository {
         ArrayList<Note> notes = new ArrayList<>(mRealm.where(Note.class).findAll());
         return notes;
     }
+
 }

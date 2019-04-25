@@ -16,7 +16,7 @@ public class HomePresenter implements HomePresenterImp {
 
     @Override
     public void goToHome() {
-        view.goToHome();
+        view.goToNewNote();
     }
 
     @Override

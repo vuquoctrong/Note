@@ -16,10 +16,12 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import rekkisoft.trongvu.com.note.R;
 import rekkisoft.trongvu.com.note.data.model.Note;
 import rekkisoft.trongvu.com.note.home.HomeActivity;
+import rekkisoft.trongvu.com.note.utils.Utility;
 
 public class NewNoteActivity extends AppCompatActivity implements View.OnClickListener, NewNoteViewImp {
 
@@ -31,13 +33,15 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
     private Button btnColorBackground, btnCamera;
     private Button btnSaveNewNote;
     private EditText etTitle, etContent;
-    private TextView tvData;
+    private TextView tvData, tvTitleNote;
+    private int colorNote;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newnote_item);
         init();
+        tvTitleNote.setText(etTitle.getText());
     }
 
     private void init() {
@@ -49,6 +53,7 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
         etTitle = findViewById(R.id.etTitle);
         etContent = findViewById(R.id.etContent);
         tvData = findViewById(R.id.tvDate);
+        tvTitleNote = findViewById(R.id.tvTitle);
 
         ivIconback.setOnClickListener(this);
         btnColorBackground.setOnClickListener(this);
@@ -58,6 +63,8 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
         updateTime();
     }
 
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -66,18 +73,22 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.btnColorwhite:
                 scrollView.setBackgroundColor(Color.WHITE);
+                colorNote = Color.WHITE;
                 dialogColor.dismiss();
                 break;
             case R.id.btnColorblue:
                 scrollView.setBackgroundColor(Color.BLUE);
+                colorNote = Color.BLUE;
                 dialogColor.dismiss();
                 break;
             case R.id.btnColorpink:
                 scrollView.setBackgroundColor(Color.parseColor("#f188bc"));
+                colorNote = Color.parseColor("#f188bc");
                 dialogColor.dismiss();
                 break;
             case R.id.btnColormandarin:
                 scrollView.setBackgroundColor(Color.parseColor("#FF68CF0E"));
+                colorNote = Color.parseColor("#FF68CF0E");
                 dialogColor.dismiss();
                 break;
             case R.id.btnColorBackground:
@@ -134,14 +145,18 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
     private void insertNote() {
         String title = etTitle.getText().toString();
         String content = etContent.getText().toString();
+        Date currentTime = Calendar.getInstance().getTime();
         Note note = new Note(title, content);
+        note.setColor(colorNote);
+        note.setCreateDate(currentTime);
         newNotePresenter.insertNote(note);
     }
 
     private void updateTime() {
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd,MMMM,YYYY hh,mm,a");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY hh:mm");
         String strDate = sdf.format(c.getTime());
         tvData.setText(strDate);
+
     }
 }

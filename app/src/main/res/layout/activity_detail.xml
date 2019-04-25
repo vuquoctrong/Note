@@ -123,6 +123,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/llMenu"
-        android:layout_below="@+id/rlMain"></ScrollView>
+        android:layout_below="@+id/rlMain"
+        android:padding="@dimen/db_28">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDateUpdate"
+                android:text="25/4/2019 1:53"
+                android:textSize="@dimen/textSize"
+                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/etTitleUpdate"
+                android:layout_marginTop="@dimen/db_28"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/etContentUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/db_28" />
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
