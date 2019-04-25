@@ -21,7 +21,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     private List<Note> notes;
     private NoteOnclickListener noteOnclickListener;
 
-    //FIXME nên thêm method setNoteOnclickListener, không cần truyền vào hàm khởi tạo như thế này
     public NoteAdapter(Context contex) {
         this.context = context;
         this.notes = new ArrayList<>();
