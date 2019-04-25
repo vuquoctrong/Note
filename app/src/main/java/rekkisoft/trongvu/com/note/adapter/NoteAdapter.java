@@ -22,10 +22,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     private NoteOnclickListener noteOnclickListener;
 
     //FIXME nên thêm method setNoteOnclickListener, không cần truyền vào hàm khởi tạo như thế này
-    public NoteAdapter(Context context, NoteOnclickListener noteOnclickListener) {
+    public NoteAdapter(Context contex) {
         this.context = context;
         this.notes = new ArrayList<>();
-        this.noteOnclickListener =noteOnclickListener;
+
+    }
+
+    public void setNoteOnclickListener(NoteOnclickListener noteOnclickListener){
+        this.noteOnclickListener = noteOnclickListener;
+        notifyDataSetChanged();
+
     }
 
     public void setNotes(List<Note> notes) {
@@ -66,11 +72,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView, NoteOnclickListener noteOnclickListener) {
             super(itemView);
             itemView.setOnClickListener(this);
-            tv_title = itemView.findViewById(R.id.tvtitle);
-            tv_one = itemView.findViewById(R.id.tvone);
-            tv_content = itemView.findViewById(R.id.tvcontent);
-            tv_Date = itemView.findViewById(R.id.tvdate);
-            iv_alarms = itemView.findViewById(R.id.ivalarms);
+            tv_title = itemView.findViewById(R.id.tvTitle);
+            tv_content = itemView.findViewById(R.id.tvContent);
+            tv_Date = itemView.findViewById(R.id.tvDate);
+            iv_alarms = itemView.findViewById(R.id.ivAlarms);
             this.noteOnclickListener =noteOnclickListener;
 
 

@@ -21,6 +21,14 @@ public class NoteRepository {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
+                Number currentIdNum = realm.where(Note.class).max("id");
+                int nextId;
+                if (currentIdNum == null) {
+                    nextId = 1;
+                } else {
+                    nextId = currentIdNum.intValue() + 1;
+                }
+                note.setId(nextId);
                 realm.insertOrUpdate(note);
             }
         });

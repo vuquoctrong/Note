@@ -1,24 +1,33 @@
 package rekkisoft.trongvu.com.note.new_note;
 
+import rekkisoft.trongvu.com.note.data.model.Note;
+import rekkisoft.trongvu.com.note.data.repository.NoteRepository;
+
 public class NewNotePresenter implements NewNotePresenterImp {
-    private NewNoteViewImp newNoteViewImp;
+    private NewNoteViewImp mView;
+    private NoteRepository noteRepository;
 
     public NewNotePresenter(NewNoteViewImp newNoteViewImp) {
-        this.newNoteViewImp = newNoteViewImp;
-    }
-
-    @Override
-    public void backHome() {
-        newNoteViewImp.backHome();
+        this.mView = newNoteViewImp;
+        noteRepository = new NoteRepository();
     }
 
     @Override
     public void showDialogBackground() {
-        newNoteViewImp.showDialogBackground();
+        mView.showDialogBackground();
     }
 
     @Override
     public void showDialogCamera() {
-        newNoteViewImp.showDialogCamera();
+        mView.showDialogCamera();
+    }
+
+
+    @Override
+    public void insertNote(Note note) {
+        if (note != null) {
+            noteRepository.insertNote(note);
+            mView.backHome();
+        }
     }
 }

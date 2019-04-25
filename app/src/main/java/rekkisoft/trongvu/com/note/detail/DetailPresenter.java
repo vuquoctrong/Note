@@ -9,7 +9,7 @@ public class DetailPresenter implements DetailPresenterImp {
 
     @Override
     public void showDialogBackground() {
-            detailViewImp.showDialogBackground();
+        detailViewImp.showDialogBackground();
     }
 
     @Override

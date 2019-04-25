@@ -1,124 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="match_parent">
+
     <RelativeLayout
-        android:id="@+id/rlmain"
-        android:orientation="horizontal"
-        android:background="@drawable/menu_dropdown_panel_note"
-        android:layout_alignParentStart="true"
+        android:id="@+id/rlMain"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <!--FIXME: id viết hoa các chữ cái đầu tvTitle-->
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/menu_dropdown_panel_note"
+        android:orientation="horizontal">
+
         <ImageButton
-            android:id="@+id/btnback"
-            android:background="@drawable/ic_action_previous_item"
-            android:layout_centerVertical="true"
+            android:id="@+id/ibBack"
             android:layout_width="@dimen/db_16"
             android:layout_height="@dimen/db_28"
-            />
-        <!--FIXME: không bắt buộc nhưng nên để id ở đầu tiên-->
-        <!--FIXME: id này đổi lại tên thành ivBackHome-->
-        <!--FIXME: format code thì dùng ctrl + alt + l -->
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_action_previous_item" />
+
         <ImageView
-            android:layout_toRightOf="@id/btnback"
-            android:id="@+id/ivbackHome"
-            android:src="@drawable/ic_launcher"
-            android:layout_centerVertical="true"
+            android:id="@+id/ivBackHome"
             android:layout_width="@dimen/db_48"
-            android:layout_height="@dimen/db_48" />
+            android:layout_height="@dimen/db_48"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/btnBackHome"
+            android:src="@drawable/ic_launcher" />
+
         <TextView
-            android:id="@+id/tvtitle"
-            android:layout_centerVertical="true"
-            android:text="Title"
-            android:textSize="@dimen/db_16"
-            android:layout_toRightOf="@id/ivbackHome"
-            android:textColor="#fffffc"
-            android:layout_marginLeft="@dimen/dn_8"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dn_8"
+            android:layout_toRightOf="@id/ivBackHome"
+            android:text="Title"
+            android:textColor="#fffffc"
+            android:textSize="@dimen/db_16" />
+
         <Button
-            android:id="@+id/btnnewnote"
+            android:id="@+id/btnNewnote"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48"
             android:layout_alignParentRight="true"
-            android:background="@drawable/abc_ic_menu_moreoverflow_normal_holo_light"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/db_16"
-            android:layout_width="@dimen/db_48"
-            android:layout_height="@dimen/db_48" />
+            android:background="@drawable/abc_ic_menu_moreoverflow_normal_holo_light" />
+
         <Button
-            android:id="@+id/btnsavenote"
-            android:layout_toLeftOf="@id/btnnewnote"
-            android:background="@drawable/abc_ic_cab_done_holo_dark"
+            android:id="@+id/btnSavenote"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/db_16"
-            android:layout_width="@dimen/db_48"
-            android:layout_height="@dimen/db_48" />
+            android:layout_toLeftOf="@id/btnNewnote"
+            android:background="@drawable/abc_ic_cab_done_holo_dark" />
 
         <Button
             android:id="@+id/btnColorBackground"
-            android:layout_toLeftOf="@id/btnsavenote"
-            android:background="@drawable/ic_action_view_as_grid"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/db_16"
-            android:layout_width="@dimen/db_48"
-            android:layout_height="@dimen/db_48" />
+            android:layout_toLeftOf="@id/btnSavenote"
+            android:background="@drawable/ic_action_view_as_grid" />
+
         <Button
             android:id="@+id/btnCamera"
-            android:layout_toLeftOf="@id/btnColorBackground"
-            android:background="@drawable/ic_action_camera"
+            android:layout_width="@dimen/db_48"
+            android:layout_height="@dimen/db_48"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/db_16"
-            android:layout_width="@dimen/db_48"
-            android:layout_height="@dimen/db_48" />
+            android:layout_toLeftOf="@id/btnColorBackground"
+            android:background="@drawable/ic_action_camera" />
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/llmenu"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/menu_dropdown_panel_note"
+        android:id="@+id/llMenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/menu_dropdown_panel_note">
 
         <ImageButton
-            android:id="@+id/ibpreviouitem"
-            android:layout_weight="1"
+            android:id="@+id/ibPreviouitem"
             android:layout_width="0dp"
             android:layout_height="@dimen/db_48"
-            android:src="@drawable/ic_action_previous_item"
+            android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_action_previous_item" />
+
         <ImageButton
-            android:id="@+id/ibshare"
-            android:layout_weight="1"
+            android:id="@+id/ibShare"
             android:layout_width="0dp"
             android:layout_height="@dimen/db_48"
-            android:src="@drawable/ic_action_share"
+            android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_action_share" />
+
         <ImageButton
-            android:id="@+id/ibdiscard"
-            android:layout_weight="1"
+            android:id="@+id/ibDiscard"
             android:layout_width="0dp"
             android:layout_height="@dimen/db_48"
-            android:src="@drawable/ic_action_discard"
+            android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_action_discard" />
+
         <ImageButton
-            android:id="@+id/ibnextitem"
-            android:layout_weight="1"
+            android:id="@+id/ibNextitem"
             android:layout_width="0dp"
             android:layout_height="@dimen/db_48"
-            android:src="@drawable/ic_action_next_item"
+            android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_action_next_item" />
     </LinearLayout>
+
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_below="@+id/rlmain"
-        android:layout_above="@+id/llmenu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ScrollView>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/llMenu"
+        android:layout_below="@+id/rlMain"></ScrollView>
 
 </RelativeLayout>

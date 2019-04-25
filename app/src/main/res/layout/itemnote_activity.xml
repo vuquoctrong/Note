@@ -1,52 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/db_150"
     android:layout_height="@dimen/db_150"
-    android:padding="@dimen/dn_8"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:padding="@dimen/dn_8">
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
-                android:id="@+id/tvtitle"
-                android:text="Title"
-                android:textSize="@dimen/textSize"
-                android:layout_marginLeft="@dimen/db_16"
+                android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/db_16"
+                android:text="Title"
+                android:textSize="@dimen/textSize" />
+
             <ImageView
-                android:id="@+id/ivalarms"
-                android:src="@drawable/ic_action_alarms_select"
+                android:id="@+id/ivAlarms"
                 android:layout_width="@dimen/db_16"
                 android:layout_height="@dimen/db_16"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_action_alarms_select" />
+
             <TextView
-                android:id="@+id/tvone"
-                android:background="@color/btncolorblue"
-                android:layout_marginTop="@dimen/dn_8"
-                android:layout_below="@id/tvtitle"
+                android:id="@+id/tvOne"
                 android:layout_width="match_parent"
-                android:layout_height="1dp" />
-            <TextView
-                android:id="@+id/tvcontent"
-                android:text="aaaaaaa"
+                android:layout_height="1dp"
+                android:layout_below="@id/tvTitle"
                 android:layout_marginTop="@dimen/dn_8"
-                android:layout_marginLeft="@dimen/db_16"
-                android:layout_below="@id/tvone"
-                android:textSize="@dimen/textSize"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:background="@color/btncolorblue" />
+
             <TextView
-                android:id="@+id/tvdate"
-                android:text="aaaaaaaaaaa"
-                android:textSize="@dimen/textSize"
+                android:id="@+id/tvContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvOne"
+                android:layout_marginLeft="@dimen/db_16"
+                android:layout_marginTop="@dimen/dn_8"
+                android:text="aaaaaaa"
+                android:textSize="@dimen/textSize" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:text="aaaaaaaaaaa"
+                android:textSize="@dimen/textSize" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

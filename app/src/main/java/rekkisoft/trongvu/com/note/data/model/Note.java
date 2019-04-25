@@ -7,8 +7,10 @@ import java.util.List;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class Note extends RealmObject{
+    @PrimaryKey
     private int id;
     private String title;
     private String content;
@@ -17,7 +19,7 @@ public class Note extends RealmObject{
     private String hour;
     private int color;
     private Date createDate;
-    private List<String> urls;
+    private RealmList<String> urls;
 
     public Note(String title, String content) {
         this.title = title;
@@ -97,7 +99,9 @@ public class Note extends RealmObject{
         return urls;
     }
 
-    public void setUrls(RealmList<String> urls) {
-        this.urls = urls;
+    public void setUrls(List<String> urls) {
+        RealmList<String> urlsRealm = new RealmList<>();
+        urlsRealm.addAll(urls);
+        this.urls = urlsRealm;
     }
 }

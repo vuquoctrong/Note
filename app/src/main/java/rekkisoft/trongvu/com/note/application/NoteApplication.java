@@ -2,6 +2,8 @@ package rekkisoft.trongvu.com.note.application;
 
 import android.app.Application;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 

@@ -4,40 +4,40 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/rlmain"
+        android:id="@+id/rlMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/menu_dropdown_panel_note"
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/btnback"
+            android:id="@+id/btnBackHome"
             android:layout_width="@dimen/db_16"
             android:layout_height="@dimen/db_28"
             android:layout_centerVertical="true"
             android:background="@drawable/ic_action_previous_item" />
 
         <ImageView
-            android:id="@+id/ivicon"
+            android:id="@+id/ivIcon"
             android:layout_width="@dimen/db_48"
             android:layout_height="@dimen/db_48"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/btnback"
+            android:layout_toRightOf="@id/btnBackHome"
             android:src="@drawable/ic_launcher" />
 
         <TextView
-            android:id="@+id/tvtitle"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dn_8"
-            android:layout_toRightOf="@id/ivicon"
+            android:layout_toRightOf="@id/ivIcon"
             android:text="Title"
             android:textColor="#fffffc"
             android:textSize="@dimen/db_16" />
 
         <Button
-            android:id="@+id/btnsavetab"
+            android:id="@+id/btnSaveNote"
             android:layout_width="@dimen/db_48"
             android:layout_height="@dimen/db_48"
             android:layout_alignParentRight="true"
@@ -51,7 +51,7 @@
             android:layout_height="@dimen/db_48"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/db_16"
-            android:layout_toLeftOf="@id/btnsavetab"
+            android:layout_toLeftOf="@id/btnSaveNote"
             android:background="@drawable/ic_action_view_as_grid" />
 
         <Button
@@ -68,13 +68,14 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rlmain">
+        android:layout_below="@id/rlMain">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
-                android:id="@+id/tvdate"
+                android:id="@+id/tvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -84,62 +85,66 @@
                 android:textSize="@dimen/db_16" />
 
             <EditText
-                android:id="@+id/ettitle"
+                android:id="@+id/etTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/db_16"
                 android:layout_alignParentStart="true"
+                android:layout_below="@id/tvDate"
+                android:layout_marginLeft="@dimen/db_16"
                 android:layout_marginTop="@dimen/db_16"
-                android:layout_below="@id/tvdate"
                 android:backgroundTint="#e4e4dd"
                 android:hint="Title"
                 android:textColorHint="#e4e4dd" />
+
             <EditText
-                android:id="@+id/etnote"
+                android:id="@+id/etContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ettitle"
+                android:layout_below="@id/etTitle"
                 android:layout_marginLeft="@dimen/db_16"
                 android:layout_marginTop="@dimen/db_16"
                 android:backgroundTint="#e4e4dd"
                 android:hint="Note"
                 android:textColorHint="#e4e4dd" />
+
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_below="@id/etnote"
                 android:layout_width="wrap_content"
-                android:padding="@dimen/db_16"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etContent"
+                android:orientation="horizontal"
+                android:padding="@dimen/db_16">
+
                 <ImageView
-                    android:id="@+id/ivalarm"
-                    android:src="@drawable/ic_action_alarms_select"
+                    android:id="@+id/ivAlarm"
                     android:layout_width="@dimen/db_28"
-                    android:layout_height="@dimen/db_28" />
+                    android:layout_height="@dimen/db_28"
+                    android:src="@drawable/ic_action_alarms_select" />
+
                 <TextView
-                    android:text="Alarm"
-                    android:layout_marginLeft="@dimen/dn_8"
-                    android:textSize="@dimen/textSize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+                    android:layout_marginLeft="@dimen/dn_8"
+                    android:text="Alarm"
+                    android:textSize="@dimen/textSize"
+                    android:visibility="gone" />
+
                 <Spinner
-                    android:id="@+id/spndateday"
+                    android:id="@+id/spnDateday"
                     android:layout_width="@dimen/db_64"
                     android:layout_height="@dimen/db_64"
-                    android:entries="@array/date_day"
-                    >
-                </Spinner>
+                    android:entries="@array/date_day"></Spinner>
+
                 <Spinner
-                    android:id="@+id/spnhour"
+                    android:id="@+id/spnHour"
                     android:layout_width="@dimen/db_64"
                     android:layout_height="@dimen/db_64"
-                    android:entries="@array/date_hour">
-                </Spinner>
+                    android:entries="@array/date_hour"></Spinner>
+
                 <Button
-                    android:id="@+id/btnclosedSpinner"
-                    android:background="@drawable/ic_action_cancel"
+                    android:id="@+id/btnClosedSpinner"
                     android:layout_width="32dp"
-                    android:layout_height="32dp" />
+                    android:layout_height="32dp"
+                    android:background="@drawable/ic_action_cancel" />
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>

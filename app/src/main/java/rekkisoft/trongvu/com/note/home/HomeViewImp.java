@@ -2,6 +2,6 @@ package rekkisoft.trongvu.com.note.home;
 
 public interface HomeViewImp {
     void goToHome();
-    void openDetailOnHome(int position);
 
+    void openDetailOnHome(int position);
 }
