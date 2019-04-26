@@ -27,7 +27,7 @@ public class Utility {
     }
 
     public static String partDateToString(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/dd/MM HH:mm", Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US);
         return sdf.format(date);
     }
 

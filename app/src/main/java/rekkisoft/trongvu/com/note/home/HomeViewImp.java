@@ -5,4 +5,5 @@ public interface HomeViewImp {
     void goToNewNote();
 
     void openDetailOnHome(int noteID);
+
 }

@@ -23,7 +23,6 @@ import rekkisoft.trongvu.com.note.utils.Define;
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener
         , HomeViewImp, NoteAdapter.NoteOnclickListener {
 
-    public static final String EXTRA_POSITION = "EXTRA_POSITION";
     private Button btnNewNote;
     private RecyclerView recyclerView;
     private NoteAdapter noteAdapter;
@@ -80,8 +79,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClickItem(int noteId) {
-        openDetailOnHome(noteId);
+    public void onClickItem(int position) {
+        openDetailOnHome(position);
     }
 
 }

@@ -52,5 +52,13 @@
             android:layout_marginRight="@dimen/db_28"
             android:layout_toLeftOf="@id/btnColorpink"
             android:background="@color/btncolormandarin" />
+        <Button
+            android:id="@+id/btnColordacbiete"
+            android:layout_width="@dimen/db_28"
+            android:layout_height="@dimen/db_28"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/db_28"
+            android:layout_toRightOf="@id/btnColorblue"
+            android:background="@color/btncolordacbiet" />
     </RelativeLayout>
 </LinearLayout>

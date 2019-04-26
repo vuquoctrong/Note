@@ -34,9 +34,14 @@ public class DetailPresenter implements DetailPresenterImp {
     }
 
     @Override
-    public void updateNote(Note note, String title, String content, Date createDate, boolean isAlarm,int color) {
-        noteRepository.updateNote(note, title, content,createDate,isAlarm,color);
+    public void updateNote(Note note, String title, String content, Date createDate, boolean isAlarm, int color) {
+        noteRepository.updateNote(note, title, content, createDate, isAlarm, color);
 
+    }
+
+    @Override
+    public void deleteNote(int noteId) {
+        noteRepository.deleteNote(noteId);
     }
 
 

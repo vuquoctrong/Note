@@ -37,9 +37,9 @@ public class NoteRepository {
     public void deleteNote(final int position) {
         mRealm.beginTransaction();
         mRealm.where(Note.class)
-                .sort("mCreateDate", Sort.DESCENDING)
+                .equalTo("id",position)
                 .findAll()
-                .deleteFromRealm(position);
+                .deleteFirstFromRealm();
         mRealm.commitTransaction();
     }
 

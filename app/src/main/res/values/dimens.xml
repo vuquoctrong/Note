@@ -5,9 +5,11 @@
     <dimen name="db_16">16dp</dimen>
     <dimen name="db_28">28dp</dimen>
     <dimen name="db_64">64dp</dimen>
+   <dimen name="db_120">120dp</dimen>
+    <dimen name="db_150">150dp</dimen>
     <dimen name="db_200">200dp</dimen>
     <dimen name="db_300">300dp</dimen>
-    <dimen name="db_150">150dp</dimen>
+
     <dimen name="db_500">500dp</dimen>
     <dimen name="db_48">32dp</dimen>
 

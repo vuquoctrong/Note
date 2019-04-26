@@ -53,6 +53,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull NoteAdapter.ViewHolder viewHolder, int i) {
         final Note note = notes.get(i);
+        final int position = i;
         viewHolder.tvTitle.setText(note.getTitle());
         viewHolder.tvContent.setText(note.getContent());
         viewHolder.tvDate.setText(Utility.partDateToString(note.getCreateDate()));
@@ -60,7 +61,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         viewHolder.cvNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                noteOnclickListener.onClickItem(note.getId());
+                noteOnclickListener.onClickItem(position);
             }
         });
     }

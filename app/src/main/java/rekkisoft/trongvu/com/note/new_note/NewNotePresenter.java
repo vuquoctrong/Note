@@ -22,7 +22,6 @@ public class NewNotePresenter implements NewNotePresenterImp {
         mView.showDialogCamera();
     }
 
-
     @Override
     public void insertNote(Note note) {
         if (note != null) {

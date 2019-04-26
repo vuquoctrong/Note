@@ -13,4 +13,6 @@ public interface DetailPresenterImp {
     List<Note> getAllNote();
 
     void updateNote(Note note, String title, String content, Date createDate, boolean isAlarm, int color);
+
+    void deleteNote(int noteId);
 }

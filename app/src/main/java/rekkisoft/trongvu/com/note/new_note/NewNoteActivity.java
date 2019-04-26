@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,27 +23,37 @@ import java.util.Date;
 import rekkisoft.trongvu.com.note.R;
 import rekkisoft.trongvu.com.note.data.model.Note;
 import rekkisoft.trongvu.com.note.home.HomeActivity;
+import rekkisoft.trongvu.com.note.utils.Define;
 import rekkisoft.trongvu.com.note.utils.Utility;
 
 public class NewNoteActivity extends AppCompatActivity implements View.OnClickListener, NewNoteViewImp {
 
-    private ImageView ivIconback;
-    private NewNotePresenter newNotePresenter;
-    private Dialog dialogColor, dialogCamera;
-    private ScrollView scrollView;
-    private Button btnColorwhite, btnColorblue, btnColorpink, btnColormandarin;
-    private Button btnColorBackground, btnCamera;
+    private Dialog dialogColor;
+    private Dialog dialogCamera;
+    private TextView tvData;
+    private TextView tvTitleNote;
+    private Button btnColorwhite;
+    private Button btnColorblue;
+    private Button btnColorpink;
+    private Button btnColormandarin;
+    private Button btnColordacbiet;
+    private Button btnColorBackground;
+    private Button btnCamera;
     private Button btnSaveNewNote;
-    private EditText etTitle, etContent;
-    private TextView tvData, tvTitleNote;
+    private EditText etTitle;
+    private EditText etContent;
+    private ScrollView scrollView;
+    private ImageView ivIconback;
     private int colorNote;
+    private NewNotePresenter newNotePresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newnote_item);
         init();
-        tvTitleNote.setText(etTitle.getText());
+        setOnchangedTitle();
+
     }
 
     private void init() {
@@ -64,7 +76,6 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -77,18 +88,23 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
                 dialogColor.dismiss();
                 break;
             case R.id.btnColorblue:
-                scrollView.setBackgroundColor(Color.BLUE);
-                colorNote = Color.BLUE;
+                scrollView.setBackgroundColor(Color.parseColor(Define.NavigationKey.COLOR1));
+                colorNote = Color.parseColor(Define.NavigationKey.COLOR1);
+                dialogColor.dismiss();
+                break;
+            case R.id.btnColordacbiete:
+                scrollView.setBackgroundColor(Color.parseColor(Define.NavigationKey.COLOR3));
+                colorNote = Color.parseColor(Define.NavigationKey.COLOR3);
                 dialogColor.dismiss();
                 break;
             case R.id.btnColorpink:
-                scrollView.setBackgroundColor(Color.parseColor("#f188bc"));
-                colorNote = Color.parseColor("#f188bc");
+                scrollView.setBackgroundColor(Color.parseColor(Define.NavigationKey.COLOR2));
+                colorNote = Color.parseColor(Define.NavigationKey.COLOR2);
                 dialogColor.dismiss();
                 break;
             case R.id.btnColormandarin:
-                scrollView.setBackgroundColor(Color.parseColor("#FF68CF0E"));
-                colorNote = Color.parseColor("#FF68CF0E");
+                scrollView.setBackgroundColor(Color.parseColor(Define.NavigationKey.COLOR4));
+                colorNote = Color.parseColor(Define.NavigationKey.COLOR4);
                 dialogColor.dismiss();
                 break;
             case R.id.btnColorBackground:
@@ -127,11 +143,13 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
         btnColorblue = dialogColor.findViewById(R.id.btnColorblue);
         btnColorpink = dialogColor.findViewById(R.id.btnColorpink);
         btnColormandarin = dialogColor.findViewById(R.id.btnColormandarin);
+        btnColordacbiet = dialogColor.findViewById(R.id.btnColordacbiete);
 
         btnColorwhite.setOnClickListener(this);
         btnColorblue.setOnClickListener(this);
         btnColorpink.setOnClickListener(this);
         btnColormandarin.setOnClickListener(this);
+        btnColordacbiet.setOnClickListener(this);
     }
 
     @Override
@@ -150,6 +168,7 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
         note.setColor(colorNote);
         note.setCreateDate(currentTime);
         newNotePresenter.insertNote(note);
+        tvTitleNote.setText(note.getTitle());
     }
 
     private void updateTime() {
@@ -158,5 +177,24 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
         String strDate = sdf.format(c.getTime());
         tvData.setText(strDate);
 
+    }
+
+    private void setOnchangedTitle() {
+        etTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvTitleNote.setText(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 }

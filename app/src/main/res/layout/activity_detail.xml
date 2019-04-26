@@ -28,7 +28,9 @@
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/db_120"
+            android:maxLines="1"
+            android:lineHeight="@dimen/db_120"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dn_8"
@@ -113,6 +115,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/db_48"
             android:layout_weight="1"
+            android:visibility="visible"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_action_next_item" />
