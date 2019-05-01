@@ -2,14 +2,12 @@ package rekkisoft.trongvu.com.note.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +18,7 @@ import rekkisoft.trongvu.com.note.detail.DetailActivity;
 import rekkisoft.trongvu.com.note.new_note.NewNoteActivity;
 import rekkisoft.trongvu.com.note.utils.Define;
 
+//FIXME Những hàm chỉ view gọi thì không cần khai báo trong interface, không cần thông qua presenter
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener
         , HomeViewImp, NoteAdapter.NoteOnclickListener {
 
@@ -38,9 +37,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void init() {
         btnNewNote = findViewById(R.id.btnNewNote);
-        btnNewNote.setOnClickListener(this);
-        homePresenter = new HomePresenter(this);
         recyclerView = findViewById(R.id.rcNote);
+
+        homePresenter = new HomePresenter(this);
+
         noteAdapter = new NoteAdapter(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -49,13 +49,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         notes = new ArrayList<>();
         notes = homePresenter.getAllNote();
         noteAdapter.setNotes(notes);
+
         noteAdapter.setNoteOnclickListener(this);
+        btnNewNote.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnNewNote:
+                //FIXME Những hàm chỉ view gọi thì không cần khai báo trong interface, không cần thông qua presenter
                 homePresenter.goToHome();
                 break;
             default:

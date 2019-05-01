@@ -16,11 +16,13 @@ public class DetailPresenter implements DetailPresenterImp {
 
     }
 
+    //FIXME: Bỏ hàm này
     @Override
     public void showDialogBackground() {
         detailViewImp.showDialogBackground();
     }
 
+    //FIXME: Bỏ hàm này
     @Override
     public void showDialogCamera() {
         detailViewImp.showDialogCamera();

@@ -4,6 +4,7 @@ import java.util.List;
 
 import rekkisoft.trongvu.com.note.data.model.Note;
 
+//FIXME tên interface không cần Imp
 public interface HomePresenterImp {
     void goToHome();
 

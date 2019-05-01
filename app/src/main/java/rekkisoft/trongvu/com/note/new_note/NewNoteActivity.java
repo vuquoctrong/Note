@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,8 @@ import rekkisoft.trongvu.com.note.home.HomeActivity;
 import rekkisoft.trongvu.com.note.utils.Define;
 import rekkisoft.trongvu.com.note.utils.Utility;
 
+
+//FIXME check lại những hàm nào chỉ dùng trong view thì không cần khai báo tring interface
 public class NewNoteActivity extends AppCompatActivity implements View.OnClickListener, NewNoteViewImp {
 
     private Dialog dialogColor;
@@ -114,6 +117,7 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
                 newNotePresenter.showDialogCamera();
                 break;
             case R.id.btnSaveNote:
+                //FIXME nên sử dụng TextUtils.isEmpty(etTitle.getText()) để check empty và ""
                 if (etTitle.getText().toString().equals("") || etContent.getText().toString().equals("")) {
                     Toast.makeText(this, "Trước khi Lưu hãy nhập thông tin nhé", Toast.LENGTH_SHORT).show();
                 } else {
@@ -161,6 +165,7 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void insertNote() {
+        //FIXME nên gọi thêm trim() etTitle.getText().toString().trim();
         String title = etTitle.getText().toString();
         String content = etContent.getText().toString();
         Date currentTime = Calendar.getInstance().getTime();
@@ -172,13 +177,17 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void updateTime() {
+        //FIXME đưa hàm này vào DateUtils
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY hh:mm");
         String strDate = sdf.format(c.getTime());
+
+
         tvData.setText(strDate);
 
     }
 
+    //FIXME tên hàm setOnChangedTitle
     private void setOnchangedTitle() {
         etTitle.addTextChangedListener(new TextWatcher() {
             @Override

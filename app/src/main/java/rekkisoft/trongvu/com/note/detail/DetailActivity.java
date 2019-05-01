@@ -75,6 +75,7 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
 
         detailPresenter = new DetailPresenter(this);
         tvDateUpdateNote = findViewById(R.id.tvDateUpdate);
+
         tvTitle = findViewById(R.id.tvTitle);
         etTitleUpdate = findViewById(R.id.etTitleUpdate);
         etContentUpdate = findViewById(R.id.etContentUpdate);
@@ -102,9 +103,11 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
         setUpForEditNote();
     }
 
+
+    //FIXME hàm này không cần override bởi vì nó đc gọi luôn trong view
+    // bỏ override, khai báo thành private
     @Override
     public void showDialogBackground() {
-
         dialogColor = new Dialog(this);
         dialogColor.setCancelable(true);
         dialogColor.setContentView(R.layout.layout_dialog_colornote);
@@ -124,6 +127,7 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
 
     }
 
+    //FIXME: bỏ override, khai báo là private, hàm này đc dùng luôn trong view nên không cần đi qua presenter
     @Override
     public void showDialogCamera() {
         dialogCamera = new Dialog(this);
@@ -132,6 +136,7 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
         dialogCamera.show();
     }
 
+    //FIXME: Không cần override, để là private
     @Override
     public void backHome() {
         Intent intent = new Intent(this, HomeActivity.class);
@@ -139,6 +144,8 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
     }
 
 
+    //FIXME Những hàm chỉ view gọi thì không cần khai báo trong interface.
+    // Chỉ những hàm của view đc gọi trong presenter thì mới cần khai báo trong interface
     @Override
     public void setUpForEditNote() {
         if (notes.size() == 1) {
@@ -160,9 +167,11 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnColorBackground:
+                //FIXME gọi trực tiếp ở view, không đi vòng qua presenter
                 detailPresenter.showDialogBackground();
                 break;
             case R.id.btnCamera:
+                //FIXME gọi trực tiếp ở view, không đi vòng qua presenter
                 detailPresenter.showDialogCamera();
                 break;
             case R.id.btnColorwhite:
@@ -211,11 +220,15 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
     }
 
     private void getNoteUpdate(int currentPosition) {
+        //FIXME: Phần get time này sẽ đc để trong class DateUtil để tái sử dụng
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY hh:mm");
         String strDate = sdf.format(c.getTime());
+
         currentTime = Calendar.getInstance().getTime();
         tvDateUpdateNote.setText(strDate);
+        //FIXME chỉ gọi 1 lần notes.get(currentPosition)
+        //Note note = notes.get(currentPosition);
         etTitleUpdate.setText(notes.get(currentPosition).getTitle());
         etContentUpdate.setText(notes.get(currentPosition).getContent());
         scrollView.setBackgroundColor(notes.get(currentPosition).getColor());
@@ -262,8 +275,13 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
             ibPreviouNote.setAlpha(60);
             ibPreviouNote.setEnabled(false);
         }
+
+        //FIXME: Có thể dùng cách dưới để viết cho gọn
+//        ibPreviouNote.setAlpha(isEnable ? 255 : 60);
+//        ibPreviouNote.setEnabled(isEnable);
     }
 
+    //FIXME có thể làm giống cái trên
     public void setImageButtonNextEnable(boolean isEnable) {
         if (isEnable) {
             ibNextNote.setAlpha(255);
@@ -275,6 +293,7 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
     }
 
     private void updateActionBottom(String action) {
+        //FIXME nên gọi Define.NavigationKey.NEXT_NOTE.equals(action) để tránh action bị null
         if (action.equals(Define.NavigationKey.NEXT_NOTE) && currentPosition < notes.size() - 1) {
             currentPosition = currentPosition + 1;
         } else if (action.equals(Define.NavigationKey.PREVIOUS_NOTE) && currentPosition > 0) {
@@ -284,6 +303,7 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
         getNoteUpdate(currentPosition);
     }
 
+    //FIXME: code xong thì nhớ format code, tên hàm setOnChangedTitle
         private void setOnchangedTitle() {
         etTitleUpdate.addTextChangedListener(new TextWatcher() {
             @Override

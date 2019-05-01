@@ -134,8 +134,9 @@
                     android:id="@+id/spnDateday"
                     android:layout_width="@dimen/db_64"
                     android:layout_height="@dimen/db_64"
-                    android:entries="@array/date_day"></Spinner>
+                    android:entries="@array/date_day"/>
 
+                <!--Fixme: trong thân spinner không có gì nữa thì để là />-->
                 <Spinner
                     android:id="@+id/spnHour"
                     android:layout_width="@dimen/db_64"
