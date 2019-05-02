@@ -43,7 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/rlMain"
-        android:padding="@dimen/db_16">
-    </android.support.v7.widget.RecyclerView>
+        android:padding="@dimen/db_16" />
 
 </RelativeLayout>

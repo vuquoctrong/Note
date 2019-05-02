@@ -43,9 +43,9 @@ public class NoteRepository {
         mRealm.commitTransaction();
     }
 
-    public void addImageNote(Note note, String url) {
+    public void addImageNote(Note note, List<String> url) {
         mRealm.beginTransaction();
-        note.getUrls().add(url);
+        note.setUrls(url);
         mRealm.commitTransaction();
     }
 

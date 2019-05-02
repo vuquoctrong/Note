@@ -18,7 +18,6 @@ import rekkisoft.trongvu.com.note.detail.DetailActivity;
 import rekkisoft.trongvu.com.note.new_note.NewNoteActivity;
 import rekkisoft.trongvu.com.note.utils.Define;
 
-//FIXME Những hàm chỉ view gọi thì không cần khai báo trong interface, không cần thông qua presenter
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener
         , HomeViewImp, NoteAdapter.NoteOnclickListener {
 
@@ -58,16 +57,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnNewNote:
-                //FIXME Những hàm chỉ view gọi thì không cần khai báo trong interface, không cần thông qua presenter
-                homePresenter.goToHome();
+                goToNewNote();
                 break;
             default:
                 break;
         }
     }
 
-    @Override
-    public void goToNewNote() {
+    private void goToNewNote() {
         Intent intent = new Intent(this, NewNoteActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_back, R.anim.anim_exit);

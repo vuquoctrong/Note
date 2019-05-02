@@ -28,12 +28,12 @@
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="@dimen/db_120"
-            android:maxLines="1"
-            android:lineHeight="@dimen/db_120"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dn_8"
             android:layout_toRightOf="@id/ivIcon"
+            android:lineHeight="@dimen/db_120"
+            android:maxLines="1"
             android:text="Title"
             android:textColor="#fffffc"
             android:textSize="@dimen/db_16" />
@@ -76,11 +76,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
             <TextView
                 android:id="@+id/tvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_below="@id/recyclerImage"
                 android:layout_marginRight="@dimen/db_16"
                 android:layout_marginTop="@dimen/db_16"
                 android:text="01/04/2019 14:16"
@@ -134,14 +141,13 @@
                     android:id="@+id/spnDateday"
                     android:layout_width="@dimen/db_64"
                     android:layout_height="@dimen/db_64"
-                    android:entries="@array/date_day"/>
+                    android:entries="@array/date_day" />
 
-                <!--Fixme: trong thân spinner không có gì nữa thì để là />-->
                 <Spinner
                     android:id="@+id/spnHour"
                     android:layout_width="@dimen/db_64"
                     android:layout_height="@dimen/db_64"
-                    android:entries="@array/date_hour"></Spinner>
+                    android:entries="@array/date_hour" />
 
                 <Button
                     android:id="@+id/btnClosedSpinner"
@@ -149,6 +155,7 @@
                     android:layout_height="32dp"
                     android:background="@drawable/ic_action_cancel" />
             </LinearLayout>
+
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

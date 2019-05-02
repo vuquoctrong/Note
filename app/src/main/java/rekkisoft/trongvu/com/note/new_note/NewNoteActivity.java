@@ -2,13 +2,19 @@ package rekkisoft.trongvu.com.note.new_note;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,19 +23,23 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import rekkisoft.trongvu.com.note.R;
+import rekkisoft.trongvu.com.note.adapter.ImageAdapter;
 import rekkisoft.trongvu.com.note.data.model.Note;
 import rekkisoft.trongvu.com.note.home.HomeActivity;
+import rekkisoft.trongvu.com.note.utils.DateUtils;
 import rekkisoft.trongvu.com.note.utils.Define;
 import rekkisoft.trongvu.com.note.utils.Utility;
 
 
-//FIXME check lại những hàm nào chỉ dùng trong view thì không cần khai báo tring interface
-public class NewNoteActivity extends AppCompatActivity implements View.OnClickListener, NewNoteViewImp {
+public class NewNoteActivity extends AppCompatActivity implements View.OnClickListener, NewNoteViewImp, ImageAdapter.ImageOnClickListener {
 
     private Dialog dialogColor;
     private Dialog dialogCamera;
@@ -43,23 +53,39 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
     private Button btnColorBackground;
     private Button btnCamera;
     private Button btnSaveNewNote;
+    private ImageView ivImageGallery;
+    private ImageView ivCameraImage;
     private EditText etTitle;
     private EditText etContent;
     private ScrollView scrollView;
     private ImageView ivIconback;
     private int colorNote;
+    private List<String> mURLImage;
     private NewNotePresenter newNotePresenter;
+    private ImageAdapter imageAdapter;
+    private RecyclerView recyclerView;
+    private Note note;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_newnote_item);
         init();
-        setOnchangedTitle();
+        setOnChangedTitle();
 
     }
 
     private void init() {
+        imageAdapter = new ImageAdapter(this);
+        recyclerView = findViewById(R.id.recyclerImage);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(imageAdapter);
+        mURLImage = new ArrayList<>();
+        imageAdapter.setImages(mURLImage);
+        imageAdapter.setImageOnclickListener(this);
+        note = new Note();
+
         ivIconback = findViewById(R.id.ivIcon);
         btnColorBackground = findViewById(R.id.btnColorBackground);
         scrollView = findViewById(R.id.scrollView);
@@ -76,6 +102,7 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
         newNotePresenter = new NewNotePresenter(this);
         btnSaveNewNote.setOnClickListener(this);
         updateTime();
+
     }
 
 
@@ -111,14 +138,17 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
                 dialogColor.dismiss();
                 break;
             case R.id.btnColorBackground:
-                newNotePresenter.showDialogBackground();
+                showDialogBackground();
                 break;
             case R.id.btnCamera:
-                newNotePresenter.showDialogCamera();
+                showDialogCamera();
+                break;
+            case R.id.ivImageGallery:
+                getImageFromAlbum();
+                dialogCamera.dismiss();
                 break;
             case R.id.btnSaveNote:
-                //FIXME nên sử dụng TextUtils.isEmpty(etTitle.getText()) để check empty và ""
-                if (etTitle.getText().toString().equals("") || etContent.getText().toString().equals("")) {
+                if (TextUtils.isEmpty(etTitle.getText()) || TextUtils.isEmpty(etContent.getText())) {
                     Toast.makeText(this, "Trước khi Lưu hãy nhập thông tin nhé", Toast.LENGTH_SHORT).show();
                 } else {
                     insertNote();
@@ -130,14 +160,46 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    private void getImageFromAlbum() {
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            i.setType("image/*");
+            startActivityForResult(i, Define.NavigationKey.RESULT_LOAD_IMAGE);
+        } catch (Exception exp) {
+            Log.i("Error", exp.toString());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                mURLImage.add(DateUtils.bitMapToString(selectedImage));
+                imageAdapter.setImages(mURLImage);
+                newNotePresenter.addImageNote(note, mURLImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        } else {
+            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
+        }
+    }
+
     @Override
     public void backHome() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
 
-    @Override
-    public void showDialogBackground() {
+    private void showDialogBackground() {
         dialogColor = new Dialog(this);
         dialogColor.setCancelable(true);
         dialogColor.setContentView(R.layout.layout_dialog_colornote);
@@ -156,20 +218,25 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
         btnColordacbiet.setOnClickListener(this);
     }
 
-    @Override
-    public void showDialogCamera() {
+    private void showDialogCamera() {
         dialogCamera = new Dialog(this);
         dialogCamera.setCancelable(true);
         dialogCamera.setContentView(R.layout.layout_dialog_insertpicture);
         dialogCamera.show();
+        ivImageGallery = dialogCamera.findViewById(R.id.ivImageGallery);
+        ivCameraImage = dialogCamera.findViewById(R.id.ivCameraImage);
+
+        ivImageGallery.setOnClickListener(this);
+        ivCameraImage.setOnClickListener(this);
+
     }
 
     private void insertNote() {
-        //FIXME nên gọi thêm trim() etTitle.getText().toString().trim();
-        String title = etTitle.getText().toString();
-        String content = etContent.getText().toString();
+        String title = etTitle.getText().toString().trim();
+        String content = etContent.getText().toString().trim();
         Date currentTime = Calendar.getInstance().getTime();
-        Note note = new Note(title, content);
+        note.setTitle(title);
+        note.setContent(content);
         note.setColor(colorNote);
         note.setCreateDate(currentTime);
         newNotePresenter.insertNote(note);
@@ -177,18 +244,13 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void updateTime() {
-        //FIXME đưa hàm này vào DateUtils
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY hh:mm");
-        String strDate = sdf.format(c.getTime());
 
-
+        String strDate = DateUtils.getTimeByPattern("dd/MM/YYYY hh:mm");
         tvData.setText(strDate);
 
     }
 
-    //FIXME tên hàm setOnChangedTitle
-    private void setOnchangedTitle() {
+    private void setOnChangedTitle() {
         etTitle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -205,5 +267,16 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
+    }
+
+
+    @Override
+    public void onClickItem(String url) {
+
+    }
+
+    @Override
+    public void onRemove(int position) {
+
     }
 }

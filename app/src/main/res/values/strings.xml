@@ -3,6 +3,7 @@
     <string name="Title">Note</string>
     <string name="Color">Choose Color</string>
     <string name="tv_insertpicture">Insert Picture</string>
+    <string name="text_share">Share</string>
     <string-array name="date_day">
         <item>Day</item>
         <item>Today</item>

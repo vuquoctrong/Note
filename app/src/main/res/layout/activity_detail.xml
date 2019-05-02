@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<!--FIXME code xong layout thì bấm ctrl alt l để format-->
+
     <RelativeLayout
         android:id="@+id/rlMain"
         android:layout_width="match_parent"
@@ -29,12 +29,12 @@
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="@dimen/db_120"
-            android:maxLines="1"
-            android:lineHeight="@dimen/db_120"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dn_8"
             android:layout_toRightOf="@id/ivBackHome"
+            android:lineHeight="@dimen/db_120"
+            android:maxLines="1"
             android:text="Title"
             android:textColor="#fffffc"
             android:textSize="@dimen/db_16" />
@@ -93,7 +93,7 @@
             android:src="@drawable/ic_action_previous_item" />
 
         <ImageButton
-            android:id="@+id/ibShare"
+            android:id="@+id/ibtnShare"
             android:layout_width="0dp"
             android:layout_height="@dimen/db_48"
             android:layout_weight="1"
@@ -115,10 +115,10 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/db_48"
             android:layout_weight="1"
-            android:visibility="visible"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_action_next_item" />
+            android:src="@drawable/ic_action_next_item"
+            android:visibility="visible" />
     </LinearLayout>
 
     <ScrollView
@@ -133,20 +133,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            </android.support.v7.widget.RecyclerView>
 
             <TextView
                 android:id="@+id/tvDateUpdate"
-                android:text="25/4/2019 1:53"
-                android:textSize="@dimen/textSize"
-                android:gravity="right"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="25/4/2019 1:53"
+                android:textSize="@dimen/textSize" />
 
             <EditText
                 android:id="@+id/etTitleUpdate"
-                android:layout_marginTop="@dimen/db_28"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/db_28" />
 
             <EditText
                 android:id="@+id/etContentUpdate"

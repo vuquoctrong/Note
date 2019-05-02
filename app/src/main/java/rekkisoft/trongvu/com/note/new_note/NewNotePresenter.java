@@ -1,5 +1,7 @@
 package rekkisoft.trongvu.com.note.new_note;
 
+import java.util.List;
+
 import rekkisoft.trongvu.com.note.data.model.Note;
 import rekkisoft.trongvu.com.note.data.repository.NoteRepository;
 
@@ -13,20 +15,15 @@ public class NewNotePresenter implements NewNotePresenterImp {
     }
 
     @Override
-    public void showDialogBackground() {
-        mView.showDialogBackground();
-    }
-
-    @Override
-    public void showDialogCamera() {
-        mView.showDialogCamera();
-    }
-
-    @Override
     public void insertNote(Note note) {
         if (note != null) {
             noteRepository.insertNote(note);
             mView.backHome();
         }
+    }
+
+    @Override
+    public void addImageNote(Note note, List<String> uRlImage) {
+        noteRepository.addImageNote(note, uRlImage);
     }
 }

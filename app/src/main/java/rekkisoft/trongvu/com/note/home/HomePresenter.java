@@ -15,22 +15,6 @@ public class HomePresenter implements HomePresenterImp {
     }
 
     @Override
-    public void goToHome() {
-        view.goToNewNote();
-    }
-
-    @Override
-    public void openDetailOnHome(int position) {
-        view.openDetailOnHome(position);
-
-    }
-
-    @Override
-    public void insertNote(Note note) {
-        noteRepository.insertNote(note);
-    }
-
-    @Override
     public List<Note> getAllNote() {
         List<Note> notes = noteRepository.getNotes();
         return notes;

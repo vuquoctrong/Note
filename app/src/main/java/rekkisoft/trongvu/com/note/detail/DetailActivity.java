@@ -4,10 +4,15 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,19 +25,24 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.DuplicateFormatFlagsException;
 import java.util.List;
+import java.util.function.LongToDoubleFunction;
 
 import rekkisoft.trongvu.com.note.R;
+import rekkisoft.trongvu.com.note.adapter.ImageAdapter;
 import rekkisoft.trongvu.com.note.data.model.Note;
 import rekkisoft.trongvu.com.note.home.HomeActivity;
+import rekkisoft.trongvu.com.note.utils.DateUtils;
 import rekkisoft.trongvu.com.note.utils.Define;
 
-public class DetailActivity extends AppCompatActivity implements DetailViewImp, View.OnClickListener {
+public class DetailActivity extends AppCompatActivity implements DetailViewImp, View.OnClickListener, ImageAdapter.ImageOnClickListener {
 
     private TextView tvDateUpdateNote;
     private TextView tvTitle;
@@ -47,9 +57,12 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
     private Button btnColordacbiet;
     private Button btnSaveNoteUpdate;
     private ImageView ivBackHome;
+    private ImageView ivImageGallery;
+    private ImageView ivCameraImage;
     private ImageButton ibDeleteNote;
     private ImageButton ibPreviouNote;
     private ImageButton ibNextNote;
+    private ImageButton ibShare;
     private Dialog dialogColor;
     private Dialog dialogCamera;
     private ScrollView scrollView;
@@ -59,6 +72,9 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
     private List<Note> notes;
     private Date currentTime;
     private int currentPosition;
+    private ImageAdapter imageAdapter;
+    private RecyclerView recyclerView;
+    private List<String> mURLImage;
 
 
     @Override
@@ -67,11 +83,18 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
         setContentView(R.layout.activity_detail);
         position = getIntent().getIntExtra(Define.NavigationKey.NOTE_ID, 0);
         init();
-        setOnchangedTitle();
+        setOnChangedTitle();
 
     }
 
     private void init() {
+
+        imageAdapter = new ImageAdapter(this);
+        recyclerView = findViewById(R.id.recyclerImage);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(imageAdapter);
+        imageAdapter.setImageOnclickListener(this);
 
         detailPresenter = new DetailPresenter(this);
         tvDateUpdateNote = findViewById(R.id.tvDateUpdate);
@@ -87,6 +110,7 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
         ibDeleteNote = findViewById(R.id.ibDiscard);
         ibPreviouNote = findViewById(R.id.ibPreviouitem);
         ibNextNote = findViewById(R.id.ibNextitem);
+        ibShare = findViewById(R.id.ibtnShare);
 
         btnBackground.setOnClickListener(this);
         btnCamera.setOnClickListener(this);
@@ -95,19 +119,18 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
         ibDeleteNote.setOnClickListener(this);
         ibPreviouNote.setOnClickListener(this);
         ibNextNote.setOnClickListener(this);
+        ibShare.setOnClickListener(this);
 
         notes = new ArrayList<>();
+        mURLImage = new ArrayList<>();
         notes = detailPresenter.getAllNote();
         currentPosition = position;
         getNoteUpdate(currentPosition);
         setUpForEditNote();
     }
 
+    private void showDialogBackground() {
 
-    //FIXME hàm này không cần override bởi vì nó đc gọi luôn trong view
-    // bỏ override, khai báo thành private
-    @Override
-    public void showDialogBackground() {
         dialogColor = new Dialog(this);
         dialogColor.setCancelable(true);
         dialogColor.setContentView(R.layout.layout_dialog_colornote);
@@ -127,27 +150,25 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
 
     }
 
-    //FIXME: bỏ override, khai báo là private, hàm này đc dùng luôn trong view nên không cần đi qua presenter
-    @Override
-    public void showDialogCamera() {
+
+    private void showDialogCamera() {
         dialogCamera = new Dialog(this);
         dialogCamera.setCancelable(true);
         dialogCamera.setContentView(R.layout.layout_dialog_insertpicture);
         dialogCamera.show();
+        ivImageGallery = dialogCamera.findViewById(R.id.ivImageGallery);
+        ivCameraImage = dialogCamera.findViewById(R.id.ivCameraImage);
+
+        ivImageGallery.setOnClickListener(this);
+        ivCameraImage.setOnClickListener(this);
     }
 
-    //FIXME: Không cần override, để là private
-    @Override
-    public void backHome() {
+    private void backHome() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
 
-
-    //FIXME Những hàm chỉ view gọi thì không cần khai báo trong interface.
-    // Chỉ những hàm của view đc gọi trong presenter thì mới cần khai báo trong interface
-    @Override
-    public void setUpForEditNote() {
+    private void setUpForEditNote() {
         if (notes.size() == 1) {
             setImageButtonNextEnable(false);
             setImageButtonPreviousEnable(false);
@@ -167,12 +188,10 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnColorBackground:
-                //FIXME gọi trực tiếp ở view, không đi vòng qua presenter
-                detailPresenter.showDialogBackground();
+                showDialogBackground();
                 break;
             case R.id.btnCamera:
-                //FIXME gọi trực tiếp ở view, không đi vòng qua presenter
-                detailPresenter.showDialogCamera();
+                showDialogCamera();
                 break;
             case R.id.btnColorwhite:
                 scrollView.setBackgroundColor(Color.WHITE);
@@ -211,29 +230,69 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
             case R.id.ibNextitem:
                 updateActionBottom(Define.NavigationKey.NEXT_NOTE);
                 break;
+            case R.id.ivImageGallery:
+                getImageFromAlbum();
+                dialogCamera.dismiss();
+                break;
+            case  R.id.ivCameraImage:
+//                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(cameraIntent, Define.NavigationKey.CAMERA_PIC_REQUEST);
+                break;
             case R.id.ibPreviouitem:
                 updateActionBottom(Define.NavigationKey.PREVIOUS_NOTE);
                 break;
+            case R.id.ibtnShare:
+                share();
             default:
                 break;
         }
     }
 
-    private void getNoteUpdate(int currentPosition) {
-        //FIXME: Phần get time này sẽ đc để trong class DateUtil để tái sử dụng
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY hh:mm");
-        String strDate = sdf.format(c.getTime());
+    private void getImageFromAlbum() {
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            i.setType(Define.NavigationKey.TYPE_IMAGE);
+            startActivityForResult(i, Define.NavigationKey.RESULT_LOAD_IMAGE);
+        } catch (Exception exp) {
+            Log.i("Error", exp.toString());
+        }
+    }
 
+    @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                mURLImage.add(DateUtils.bitMapToString(selectedImage));
+                imageAdapter.setImages(mURLImage);
+                detailPresenter.addImageNote(notes.get(currentPosition), mURLImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        } else {
+            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void getNoteUpdate(int currentPosition) {
+        final Note note = notes.get(currentPosition);
+        String strDate = DateUtils.getTimeByPattern("dd/MM/YYYY hh:mm");
         currentTime = Calendar.getInstance().getTime();
         tvDateUpdateNote.setText(strDate);
-        //FIXME chỉ gọi 1 lần notes.get(currentPosition)
-        //Note note = notes.get(currentPosition);
-        etTitleUpdate.setText(notes.get(currentPosition).getTitle());
-        etContentUpdate.setText(notes.get(currentPosition).getContent());
-        scrollView.setBackgroundColor(notes.get(currentPosition).getColor());
-        colorNoteUpdate = notes.get(currentPosition).getColor();
-        tvTitle.setText(notes.get(currentPosition).getTitle());
+        etTitleUpdate.setText(note.getTitle());
+        etContentUpdate.setText(note.getContent());
+        scrollView.setBackgroundColor(note.getColor());
+        colorNoteUpdate = note.getColor();
+        tvTitle.setText(note.getTitle());
+        mURLImage.addAll(note.getUrls());
+        imageAdapter.setImages(note.getUrls());
 
     }
 
@@ -276,35 +335,35 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
             ibPreviouNote.setEnabled(false);
         }
 
-        //FIXME: Có thể dùng cách dưới để viết cho gọn
-//        ibPreviouNote.setAlpha(isEnable ? 255 : 60);
-//        ibPreviouNote.setEnabled(isEnable);
+
     }
 
-    //FIXME có thể làm giống cái trên
+
     public void setImageButtonNextEnable(boolean isEnable) {
-        if (isEnable) {
-            ibNextNote.setAlpha(255);
-            ibNextNote.setEnabled(true);
-        } else {
-            ibNextNote.setAlpha(60);
-            ibNextNote.setEnabled(false);
-        }
+        ibNextNote.setAlpha(isEnable ? 255 : 60);
+        ibNextNote.setEnabled(isEnable);
     }
 
     private void updateActionBottom(String action) {
-        //FIXME nên gọi Define.NavigationKey.NEXT_NOTE.equals(action) để tránh action bị null
-        if (action.equals(Define.NavigationKey.NEXT_NOTE) && currentPosition < notes.size() - 1) {
+
+        if (Define.NavigationKey.NEXT_NOTE.equals(action) && currentPosition < notes.size() - 1) {
             currentPosition = currentPosition + 1;
-        } else if (action.equals(Define.NavigationKey.PREVIOUS_NOTE) && currentPosition > 0) {
+        } else if (Define.NavigationKey.PREVIOUS_NOTE.equals(action) && currentPosition > 0) {
             currentPosition = currentPosition - 1;
         }
         setUpForEditNote();
         getNoteUpdate(currentPosition);
     }
 
-    //FIXME: code xong thì nhớ format code, tên hàm setOnChangedTitle
-        private void setOnchangedTitle() {
+    private void share() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, etContentUpdate.getText().toString());
+        sendIntent.setType(Define.NavigationKey.TYPE_SHARE);
+        startActivity(Intent.createChooser(sendIntent, getString(R.string.text_share)));
+    }
+
+    private void setOnChangedTitle() {
         etTitleUpdate.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -321,6 +380,27 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
 
             }
         });
+    }
+
+
+    @Override
+    public void onClickItem(String url) {
+        // previewImage(url);
+
+    }
+
+    @Override
+    public void onRemove(int position) {
+        detailPresenter.removeImageNote(notes.get(currentPosition), position);
+        imageAdapter.notifyDataSetChanged();
+
+    }
+
+    public void previewImage(String url) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(url), Define.NavigationKey.TYPE_IMAGE);
+        startActivity(intent);
     }
 
 }

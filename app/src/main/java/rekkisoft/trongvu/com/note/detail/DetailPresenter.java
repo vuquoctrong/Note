@@ -16,19 +16,6 @@ public class DetailPresenter implements DetailPresenterImp {
 
     }
 
-    //FIXME: Bỏ hàm này
-    @Override
-    public void showDialogBackground() {
-        detailViewImp.showDialogBackground();
-    }
-
-    //FIXME: Bỏ hàm này
-    @Override
-    public void showDialogCamera() {
-        detailViewImp.showDialogCamera();
-    }
-
-
     @Override
     public List<Note> getAllNote() {
         List<Note> notes = noteRepository.getNotes();
@@ -44,6 +31,16 @@ public class DetailPresenter implements DetailPresenterImp {
     @Override
     public void deleteNote(int noteId) {
         noteRepository.deleteNote(noteId);
+    }
+
+    @Override
+    public void addImageNote(Note note, List<String> uRlImage) {
+        noteRepository.addImageNote(note,uRlImage);
+    }
+
+    @Override
+    public void removeImageNote(Note note, int positon) {
+        noteRepository.removeImageNote(note,positon);
     }
 
 

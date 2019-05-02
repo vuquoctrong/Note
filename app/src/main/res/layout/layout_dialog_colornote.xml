@@ -52,6 +52,7 @@
             android:layout_marginRight="@dimen/db_28"
             android:layout_toLeftOf="@id/btnColorpink"
             android:background="@color/btncolormandarin" />
+
         <Button
             android:id="@+id/btnColordacbiete"
             android:layout_width="@dimen/db_28"

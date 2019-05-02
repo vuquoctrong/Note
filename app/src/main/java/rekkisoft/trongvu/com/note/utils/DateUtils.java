@@ -1,5 +1,10 @@
 package rekkisoft.trongvu.com.note.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -11,5 +16,24 @@ public class DateUtils {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.getDefault());
         String time = sdf.format(c.getTime());
         return time;
+    }
+
+    public static String bitMapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] arr = baos.toByteArray();
+        String result = Base64.encodeToString(arr, Base64.DEFAULT);
+        return result;
+    }
+
+    public static Bitmap stringToBitMap(String image) {
+        try {
+            byte[] encodeByte = Base64.decode(image, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 }
