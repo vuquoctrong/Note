@@ -161,5 +161,4 @@
                 android:layout_marginTop="@dimen/db_28" />
         </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>

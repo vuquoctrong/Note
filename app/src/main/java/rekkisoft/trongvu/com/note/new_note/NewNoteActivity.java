@@ -147,6 +147,10 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
                 getImageFromAlbum();
                 dialogCamera.dismiss();
                 break;
+            case R.id.ivCameraImage:
+                addImageToCamera();
+                dialogCamera.dismiss();
+                break;
             case R.id.btnSaveNote:
                 if (TextUtils.isEmpty(etTitle.getText()) || TextUtils.isEmpty(etContent.getText())) {
                     Toast.makeText(this, "Trước khi Lưu hãy nhập thông tin nhé", Toast.LENGTH_SHORT).show();
@@ -176,18 +180,27 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
         super.onActivityResult(reqCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
-            try {
-                final Uri imageUri = data.getData();
-                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                mURLImage.add(DateUtils.bitMapToString(selectedImage));
+            if (reqCode == Define.NavigationKey.RESULT_LOAD_IMAGE) {
+                try {
+                    final Uri imageUri = data.getData();
+                    final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                    mURLImage.add(DateUtils.bitMapToString(selectedImage));
+                    imageAdapter.setImages(mURLImage);
+                    newNotePresenter.addImageNote(note, mURLImage);
+                    imageAdapter.notifyDataSetChanged();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                }
+
+            } else if (reqCode == Define.NavigationKey.CAMERA_PIC_REQUEST) {
+                Bitmap image = (Bitmap) data.getExtras().get("data");
+                mURLImage.add(DateUtils.bitMapToString(image));
                 imageAdapter.setImages(mURLImage);
                 newNotePresenter.addImageNote(note, mURLImage);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                imageAdapter.notifyDataSetChanged();
             }
-
         } else {
             Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
@@ -277,6 +290,14 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onRemove(int position) {
+        newNotePresenter.removeImageNote(note, position);
+        imageAdapter.notifyDataSetChanged();
+
+    }
+
+    private void addImageToCamera() {
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, Define.NavigationKey.CAMERA_PIC_REQUEST);
 
     }
 }

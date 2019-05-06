@@ -8,4 +8,7 @@ public interface NewNotePresenterImp {
     void insertNote(Note note);
 
     void addImageNote(Note note, List<String> uRlImage);
+
+    void removeImageNote(Note note, int positon);
+
 }

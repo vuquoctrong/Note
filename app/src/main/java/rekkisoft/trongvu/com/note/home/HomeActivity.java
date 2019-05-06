@@ -1,6 +1,9 @@
 package rekkisoft.trongvu.com.note.home;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -31,6 +34,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        initPermission();
         init();
     }
 
@@ -51,6 +55,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         noteAdapter.setNoteOnclickListener(this);
         btnNewNote.setOnClickListener(this);
+    }
+    public void initPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.CAMERA)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                requestPermissions(new String[]{Manifest.permission.CAMERA},
+                        1);
+            }
+        }
+        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                2);
+        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                3);
     }
 
     @Override

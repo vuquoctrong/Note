@@ -1,14 +1,19 @@
 package rekkisoft.trongvu.com.note.detail;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -37,6 +42,7 @@ import java.util.function.LongToDoubleFunction;
 
 import rekkisoft.trongvu.com.note.R;
 import rekkisoft.trongvu.com.note.adapter.ImageAdapter;
+import rekkisoft.trongvu.com.note.alarm.AlarmActivity;
 import rekkisoft.trongvu.com.note.data.model.Note;
 import rekkisoft.trongvu.com.note.home.HomeActivity;
 import rekkisoft.trongvu.com.note.utils.DateUtils;
@@ -89,6 +95,7 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
 
     private void init() {
 
+
         imageAdapter = new ImageAdapter(this);
         recyclerView = findViewById(R.id.recyclerImage);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
@@ -120,6 +127,8 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
         ibPreviouNote.setOnClickListener(this);
         ibNextNote.setOnClickListener(this);
         ibShare.setOnClickListener(this);
+
+
 
         notes = new ArrayList<>();
         mURLImage = new ArrayList<>();
@@ -234,15 +243,16 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
                 getImageFromAlbum();
                 dialogCamera.dismiss();
                 break;
-            case  R.id.ivCameraImage:
-//                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(cameraIntent, Define.NavigationKey.CAMERA_PIC_REQUEST);
+            case R.id.ivCameraImage:
+                addImageToCamera();
+                dialogCamera.dismiss();
                 break;
             case R.id.ibPreviouitem:
                 updateActionBottom(Define.NavigationKey.PREVIOUS_NOTE);
                 break;
             case R.id.ibtnShare:
                 share();
+                break;
             default:
                 break;
         }
@@ -262,23 +272,31 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
-
         if (resultCode == RESULT_OK) {
-            try {
-                final Uri imageUri = data.getData();
-                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                mURLImage.add(DateUtils.bitMapToString(selectedImage));
+            if (reqCode == Define.NavigationKey.RESULT_LOAD_IMAGE) {
+                try {
+                    final Uri imageUri = data.getData();
+                    final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                    mURLImage.add(DateUtils.bitMapToString(selectedImage));
+                    imageAdapter.setImages(mURLImage);
+                    detailPresenter.addImageNote(notes.get(currentPosition), mURLImage);
+                    imageAdapter.notifyDataSetChanged();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                }
+            } else if (reqCode == Define.NavigationKey.CAMERA_PIC_REQUEST) {
+                Bitmap image = (Bitmap) data.getExtras().get("data");
+                mURLImage.add(DateUtils.bitMapToString(image));
                 imageAdapter.setImages(mURLImage);
                 detailPresenter.addImageNote(notes.get(currentPosition), mURLImage);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                imageAdapter.notifyDataSetChanged();
             }
-
         } else {
             Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
+
     }
 
     private void getNoteUpdate(int currentPosition) {
@@ -385,7 +403,7 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
 
     @Override
     public void onClickItem(String url) {
-        // previewImage(url);
+        previewImage(url);
 
     }
 
@@ -396,11 +414,19 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
 
     }
 
-    public void previewImage(String url) {
+    private void previewImage(String url) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(url), Define.NavigationKey.TYPE_IMAGE);
         startActivity(intent);
     }
+
+    private void addImageToCamera() {
+
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, Define.NavigationKey.CAMERA_PIC_REQUEST);
+
+    }
+
 
 }

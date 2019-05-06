@@ -26,4 +26,9 @@ public class NewNotePresenter implements NewNotePresenterImp {
     public void addImageNote(Note note, List<String> uRlImage) {
         noteRepository.addImageNote(note, uRlImage);
     }
+
+    @Override
+    public void removeImageNote(Note note, int positon) {
+        noteRepository.removeImageNote(note,positon);
+    }
 }

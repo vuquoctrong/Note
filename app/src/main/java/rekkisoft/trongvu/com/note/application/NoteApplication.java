@@ -1,6 +1,10 @@
 package rekkisoft.trongvu.com.note.application;
 
+import android.Manifest;
 import android.app.Application;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.widget.Toast;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -23,5 +27,7 @@ public class NoteApplication extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(config);
+
     }
+
 }
