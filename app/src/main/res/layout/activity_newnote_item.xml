@@ -130,6 +130,7 @@
                     android:src="@drawable/ic_action_alarms_select" />
 
                 <TextView
+                    android:id="@+id/tvAlarm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dn_8"
@@ -137,23 +138,28 @@
                     android:textSize="@dimen/textSize"
                     android:visibility="gone" />
 
-                <Spinner
-                    android:id="@+id/spnDateday"
-                    android:layout_width="@dimen/db_64"
-                    android:layout_height="@dimen/db_64"
-                    android:entries="@array/date_day" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <Spinner
+                        android:id="@+id/spnDateday"
+                        android:layout_width="@dimen/db_64"
+                        android:layout_height="@dimen/db_64"
+                        android:entries="@array/date_day" />
 
-                <Spinner
-                    android:id="@+id/spnHour"
-                    android:layout_width="@dimen/db_64"
-                    android:layout_height="@dimen/db_64"
-                    android:entries="@array/date_hour" />
+                    <Spinner
+                        android:id="@+id/spnHour"
+                        android:layout_width="@dimen/db_64"
+                        android:layout_height="@dimen/db_64"
+                        android:entries="@array/date_hour" />
 
-                <Button
-                    android:id="@+id/btnClosedSpinner"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/ic_action_cancel" />
+                    <Button
+                        android:id="@+id/btnCloseAlarm"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/ic_action_cancel" />
+                </LinearLayout>
             </LinearLayout>
 
         </RelativeLayout>

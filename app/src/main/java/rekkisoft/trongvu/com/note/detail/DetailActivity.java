@@ -1,19 +1,18 @@
 package rekkisoft.trongvu.com.note.detail;
 
-import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -22,33 +21,35 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.DuplicateFormatFlagsException;
 import java.util.List;
-import java.util.function.LongToDoubleFunction;
 
 import rekkisoft.trongvu.com.note.R;
 import rekkisoft.trongvu.com.note.adapter.ImageAdapter;
-import rekkisoft.trongvu.com.note.alarm.AlarmActivity;
 import rekkisoft.trongvu.com.note.data.model.Note;
 import rekkisoft.trongvu.com.note.home.HomeActivity;
+import rekkisoft.trongvu.com.note.service.SchedulingService;
 import rekkisoft.trongvu.com.note.utils.DateUtils;
 import rekkisoft.trongvu.com.note.utils.Define;
 
-public class DetailActivity extends AppCompatActivity implements DetailViewImp, View.OnClickListener, ImageAdapter.ImageOnClickListener {
+public class DetailActivity extends AppCompatActivity
+        implements DetailViewImp, View.OnClickListener, ImageAdapter.ImageOnClickListener,AdapterView.OnItemSelectedListener {
 
     private TextView tvDateUpdateNote;
     private TextView tvTitle;
@@ -81,6 +82,16 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
     private ImageAdapter imageAdapter;
     private RecyclerView recyclerView;
     private List<String> mURLImage;
+
+    private ImageView ivAlarm;
+    private TextView tvAlarm;
+    private LinearLayout llSpinner;
+    private Spinner spnHour;
+    private Spinner spnDay;
+    private Button btnCloseAlarm;
+    private ArrayAdapter<CharSequence> mDayAdapter;
+    private ArrayAdapter<CharSequence> mHourAdapter;
+
 
 
     @Override
@@ -128,6 +139,12 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
         ibNextNote.setOnClickListener(this);
         ibShare.setOnClickListener(this);
 
+        ivAlarm = findViewById(R.id.ivAlarm);
+        tvAlarm = findViewById(R.id.tvAlarm);
+        llSpinner = findViewById(R.id.llSpinner);
+        spnDay = findViewById(R.id.spnDateday);
+        spnHour = findViewById(R.id.spnHour);
+        btnCloseAlarm = findViewById(R.id.btnCloseAlarm);
 
 
         notes = new ArrayList<>();
@@ -136,6 +153,14 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
         currentPosition = position;
         getNoteUpdate(currentPosition);
         setUpForEditNote();
+
+        mDayAdapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item, Define.NavigationKey.days);
+        mDayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnDay.setAdapter(mDayAdapter);
+
+        mHourAdapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item, Define.NavigationKey.hours);
+        mHourAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnHour.setAdapter(mHourAdapter);
     }
 
     private void showDialogBackground() {
@@ -232,6 +257,7 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
                 break;
             case R.id.btnSavenote:
                 updateNote();
+                setAlarmNote();
                 break;
             case R.id.ibDiscard:
                 showDeleteNoteDialog();
@@ -416,17 +442,53 @@ public class DetailActivity extends AppCompatActivity implements DetailViewImp, 
 
     private void previewImage(String url) {
         Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
+        intent.setAction("android.intent.action.VIEW");
         intent.setDataAndType(Uri.parse(url), Define.NavigationKey.TYPE_IMAGE);
         startActivity(intent);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//
+//            Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+//            intent.setData(Uri.parse(url));
+//            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            startActivity(intent);
+//        } else {
+//
+//            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            intent.setDataAndType(Uri.parse(url), Define.NavigationKey.TYPE_IMAGE);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//           startActivity(intent);
+//        }
     }
 
     private void addImageToCamera() {
-
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, Define.NavigationKey.CAMERA_PIC_REQUEST);
 
     }
+    private void setAlarmNote(){
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, SchedulingService.class);
+        intent.putExtra(Define.NavigationKey.KEY_TYPE,notes.get(currentPosition).getTitle());
+        PendingIntent pendingIntent = PendingIntent.getService(this,0,intent,0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, 1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmManager
+                    .setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        } else {
+            alarmManager
+                    .set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
+    }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

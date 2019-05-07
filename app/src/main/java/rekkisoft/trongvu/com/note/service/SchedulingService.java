@@ -7,43 +7,44 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import rekkisoft.trongvu.com.note.R;
-import rekkisoft.trongvu.com.note.alarm.AlarmActivity;
-import rekkisoft.trongvu.com.note.home.HomeActivity;
+import rekkisoft.trongvu.com.note.detail.DetailActivity;
 import rekkisoft.trongvu.com.note.utils.Define;
 
 public class SchedulingService extends IntentService {
 
     private static final int TIME_VIBRATE = 1000;
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
-    public SchedulingService(String name) {
+
+    public SchedulingService() {
         super(SchedulingService.class.getSimpleName());
     }
 
     @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        NotificationManager alarmNotificationManager = (NotificationManager) this
-                .getSystemService(Context.NOTIFICATION_SERVICE);
+    protected void onHandleIntent(Intent intent) {
 
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, AlarmActivity.class), 0);
-
-        NotificationCompat.Builder alamNotificationBuilder = new NotificationCompat.Builder(
-                this).setContentTitle("Alarm").setSmallIcon(R.drawable.ic_launcher)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText("Wake Up! Wake Up!"))
-                .setContentText("Wake Up! Wake Up!");
-
-
-        alamNotificationBuilder.setContentIntent(contentIntent);
-        alarmNotificationManager.notify(1, alamNotificationBuilder.build());
-        Log.d("AlarmService", "Notification sent.");
+        String index = intent.getStringExtra(Define.NavigationKey.KEY_TYPE);
+        Intent notificationIntent = new Intent(this, DetailActivity.class);
+        notificationIntent
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        int requestID = (int) System.currentTimeMillis();
+        PendingIntent contentIntent = PendingIntent
+                .getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.mipmap.note)
+                        .setContentTitle(getString(R.string.app_name))
+                        .setContentText("Note: " + index)
+                        .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setAutoCancel(true)
+                        .setPriority(6)
+                        .setVibrate(new long[]{TIME_VIBRATE, TIME_VIBRATE, TIME_VIBRATE, TIME_VIBRATE,
+                                TIME_VIBRATE})
+                        .setContentIntent(contentIntent);
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1, builder.build());
     }
 }
