@@ -61,7 +61,7 @@ public class NoteRepository {
         mRealm.commitTransaction();
     }
 
-
+    //FIXME Ở hàm updateNote chỉ cần truyền vào Note chú không cần các thuộc tính khác
     public void updateNote(Note note, String title, String content, Date createDate, boolean isAlarm,int color) {
         mRealm.beginTransaction();
         note.setTitle(title);
@@ -71,6 +71,8 @@ public class NoteRepository {
         note.setColor(color);
         mRealm.commitTransaction();
     }
+
+
 
 
     public void updateNote(Note note, String title, String content, String day, String hour, Date createDate, boolean isAlarm) {

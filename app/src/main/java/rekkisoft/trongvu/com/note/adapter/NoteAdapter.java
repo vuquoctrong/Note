@@ -20,6 +20,7 @@ import rekkisoft.trongvu.com.note.utils.Utility;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
+    //FIXME Không dùng context thì bỏ đi
     private Context context;
     private List<Note> notes;
     private NoteOnclickListener noteOnclickListener;
@@ -32,6 +33,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     public void setNoteOnclickListener(NoteOnclickListener noteOnclickListener){
         this.noteOnclickListener = noteOnclickListener;
+        //FIXME Không cần hàm này khi set onclick
         notifyDataSetChanged();
 
     }
@@ -71,8 +73,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         return notes.size();
     }
 
+    //FIXME đổi tên ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        //FIXME Khai báo riêng từng textview
         TextView tvTitle,tvContent,tvDate;
         ImageView ivAlarms;
         RelativeLayout rlColorItem;
@@ -90,6 +94,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         }
 
     }
+
     public interface NoteOnclickListener{
         void onClickItem(int noteId);
     }
