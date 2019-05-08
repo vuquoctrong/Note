@@ -2,20 +2,21 @@ package rekkisoft.trongvu.com.note.service;
 
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.provider.Settings;
-import android.support.v4.app.NotificationCompat;
+
 
 import rekkisoft.trongvu.com.note.R;
 import rekkisoft.trongvu.com.note.detail.DetailActivity;
 import rekkisoft.trongvu.com.note.utils.Define;
 
 public class SchedulingService extends IntentService {
-
-    private static final int TIME_VIBRATE = 1000;
+    public static final String NOTIFICATION_CHANNEL_ID = "10001";
 
     public SchedulingService() {
         super(SchedulingService.class.getSimpleName());
@@ -24,27 +25,44 @@ public class SchedulingService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
+        createNotification(intent);
+    }
+
+    private void createNotification(Intent intent) {
+        /**Creates an explicit intent for an Activity in your app**/
         String index = intent.getStringExtra(Define.NavigationKey.KEY_TYPE);
-        Intent notificationIntent = new Intent(this, DetailActivity.class);
-        notificationIntent
-                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        int requestID = (int) System.currentTimeMillis();
-        PendingIntent contentIntent = PendingIntent
-                .getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.note)
-                        .setContentTitle(getString(R.string.app_name))
-                        .setContentText("Note: " + index)
-                        .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
-                        .setDefaults(Notification.DEFAULT_SOUND)
-                        .setAutoCancel(true)
-                        .setPriority(6)
-                        .setVibrate(new long[]{TIME_VIBRATE, TIME_VIBRATE, TIME_VIBRATE, TIME_VIBRATE,
-                                TIME_VIBRATE})
-                        .setContentIntent(contentIntent);
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, builder.build());
+        Intent resultIntent = new Intent(this
+                , DetailActivity.class);
+        resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this,
+                0 /* Request code */, resultIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification.Builder mBuilder = new Notification.Builder(this);
+        mBuilder.setSmallIcon(R.mipmap.note);
+        mBuilder.setContentTitle(getString(R.string.app_name))
+                .setContentText(index)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(false)
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                .setContentIntent(resultPendingIntent);
+
+        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            assert mNotificationManager != null;
+            mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
+            mNotificationManager.createNotificationChannel(notificationChannel);
+        }
+        assert mNotificationManager != null;
+        mNotificationManager.notify(0 /* Request Code */, mBuilder.build());
     }
 }
+

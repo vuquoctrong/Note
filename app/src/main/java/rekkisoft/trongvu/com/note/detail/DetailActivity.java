@@ -2,8 +2,10 @@ package rekkisoft.trongvu.com.note.detail;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +26,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -31,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
@@ -47,9 +51,10 @@ import rekkisoft.trongvu.com.note.home.HomeActivity;
 import rekkisoft.trongvu.com.note.service.SchedulingService;
 import rekkisoft.trongvu.com.note.utils.DateUtils;
 import rekkisoft.trongvu.com.note.utils.Define;
+import rekkisoft.trongvu.com.note.utils.Utility;
 
 public class DetailActivity extends AppCompatActivity
-        implements DetailViewImp, View.OnClickListener, ImageAdapter.ImageOnClickListener,AdapterView.OnItemSelectedListener {
+        implements DetailViewImp, View.OnClickListener, ImageAdapter.ImageOnClickListener, AdapterView.OnItemSelectedListener {
 
     private TextView tvDateUpdateNote;
     private TextView tvTitle;
@@ -88,10 +93,12 @@ public class DetailActivity extends AppCompatActivity
     private LinearLayout llSpinner;
     private Spinner spnHour;
     private Spinner spnDay;
-    private Button btnCloseAlarm;
-    private ArrayAdapter<CharSequence> mDayAdapter;
-    private ArrayAdapter<CharSequence> mHourAdapter;
+    private Button btnSaveAlarm;
+    private ArrayAdapter<String> mDayAdapter;
+    private ArrayAdapter<String> mHourAdapter;
 
+    private String hourAlarm;
+    private String dayAlarm;
 
 
     @Override
@@ -139,12 +146,15 @@ public class DetailActivity extends AppCompatActivity
         ibNextNote.setOnClickListener(this);
         ibShare.setOnClickListener(this);
 
+
         ivAlarm = findViewById(R.id.ivAlarm);
         tvAlarm = findViewById(R.id.tvAlarm);
         llSpinner = findViewById(R.id.llSpinner);
         spnDay = findViewById(R.id.spnDateday);
         spnHour = findViewById(R.id.spnHour);
-        btnCloseAlarm = findViewById(R.id.btnCloseAlarm);
+        btnSaveAlarm = findViewById(R.id.btnSaveAlarm);
+        ivAlarm.setOnClickListener(this);
+        btnSaveAlarm.setOnClickListener(this);
 
 
         notes = new ArrayList<>();
@@ -154,13 +164,16 @@ public class DetailActivity extends AppCompatActivity
         getNoteUpdate(currentPosition);
         setUpForEditNote();
 
-        mDayAdapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item, Define.NavigationKey.days);
+        mDayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, Define.NavigationKey.days);
         mDayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnDay.setAdapter(mDayAdapter);
 
-        mHourAdapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item, Define.NavigationKey.hours);
+        mHourAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, Define.NavigationKey.hours);
         mHourAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnHour.setAdapter(mHourAdapter);
+
+        spnDay.setOnItemSelectedListener(this);
+        spnHour.setOnItemSelectedListener(this);
     }
 
     private void showDialogBackground() {
@@ -257,7 +270,6 @@ public class DetailActivity extends AppCompatActivity
                 break;
             case R.id.btnSavenote:
                 updateNote();
-                setAlarmNote();
                 break;
             case R.id.ibDiscard:
                 showDeleteNoteDialog();
@@ -278,6 +290,13 @@ public class DetailActivity extends AppCompatActivity
                 break;
             case R.id.ibtnShare:
                 share();
+                break;
+            case R.id.ivAlarm:
+                tvAlarm.setVisibility(View.GONE);
+                llSpinner.setVisibility(View.VISIBLE);
+                break;
+            case R.id.btnSaveAlarm:
+                showAlarmDialog();
                 break;
             default:
                 break;
@@ -465,30 +484,148 @@ public class DetailActivity extends AppCompatActivity
         startActivityForResult(cameraIntent, Define.NavigationKey.CAMERA_PIC_REQUEST);
 
     }
-    private void setAlarmNote(){
+
+    private void setAlarmNote() {
+        long timesInMillis = Utility.parseDateToMilisecond(dayAlarm+" "+hourAlarm);
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, SchedulingService.class);
-        intent.putExtra(Define.NavigationKey.KEY_TYPE,notes.get(currentPosition).getTitle());
-        PendingIntent pendingIntent = PendingIntent.getService(this,0,intent,0);
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MINUTE, 1);
+        intent.putExtra(Define.NavigationKey.KEY_TYPE, notes.get(currentPosition).getTitle());
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             alarmManager
-                    .setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                    .setExact(AlarmManager.RTC_WAKEUP, timesInMillis, pendingIntent);
         } else {
             alarmManager
-                    .set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                    .set(AlarmManager.RTC_WAKEUP, timesInMillis, pendingIntent);
         }
     }
 
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getId() == R.id.spnDateday) {
+            switch (position) {
+                case 1:
+                    dayAlarm = Utility.addDate(0);
+                    Define.NavigationKey.days[0]=dayAlarm;
+                    mDayAdapter.notifyDataSetChanged();
+                    Toast.makeText(this,"Date Alarm: "+dayAlarm,Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+                    dayAlarm = Utility.addDate(1);
+                    Define.NavigationKey.days[0]=dayAlarm;
+                    mDayAdapter.notifyDataSetChanged();
+                    Toast.makeText(this,"Date Alarm: "+dayAlarm,Toast.LENGTH_SHORT).show();
+                    break;
+                case 3:
+                    dayAlarm = Utility.addDate(2);
+                    Define.NavigationKey.days[0]=dayAlarm;
+                    mDayAdapter.notifyDataSetChanged();
+                    Toast.makeText(this,"Date Alarm: "+dayAlarm,Toast.LENGTH_SHORT).show();
+                    break;
+                case 4:
+                    showDataPickerDiaLog();
+                    break;
+                default:
+                    break;
+            }
+        } else if (parent.getId() == R.id.spnHour) {
+            switch (position) {
+                case 1:
+                    hourAlarm = Define.NavigationKey.hours[1];
+                    Define.NavigationKey.hours[0] = hourAlarm;
+                    mHourAdapter.notifyDataSetChanged();
+                    Toast.makeText(this,"Hour Alarm: "+hourAlarm,Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+                    hourAlarm = Define.NavigationKey.hours[2];
+                    Define.NavigationKey.hours[0] = hourAlarm;
+                    mHourAdapter.notifyDataSetChanged();
+                    Toast.makeText(this,"Hour Alarm: "+hourAlarm,Toast.LENGTH_SHORT).show();
+                    break;
+                case 3:
+                    hourAlarm = Define.NavigationKey.hours[3];
+                    Define.NavigationKey.hours[0] = hourAlarm;
+                    mHourAdapter.notifyDataSetChanged();
+                    Toast.makeText(this,"Hour Alarm: "+hourAlarm,Toast.LENGTH_SHORT).show();
+                    break;
+                case 4:
+                    hourAlarm = Define.NavigationKey.hours[4];
+                    Define.NavigationKey.hours[0] = hourAlarm;
+                    mHourAdapter.notifyDataSetChanged();
+                    Toast.makeText(this,"Hour Alarm: "+hourAlarm,Toast.LENGTH_SHORT).show();
+                    break;
+                case 5:
+                    showTimePickerDialog();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void showTimePickerDialog() {
+        Calendar calendar = Calendar.getInstance();
+        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                hourAlarm = hourOfDay + ":" + minute;
+                Define.NavigationKey.hours[0] = hourAlarm;
+                mHourAdapter.notifyDataSetChanged();
+                spnHour.setSelection(0);
+
+            }
+        }, hour, minute, true);
+
+        timePickerDialog.show();
+    }
+
+    private void showDataPickerDiaLog() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                dayAlarm = dayOfMonth + "/" + monthOfYear + "/" + year;
+                Define.NavigationKey.days[0]=dayAlarm;
+                mDayAdapter.notifyDataSetChanged();
+
+            }
+        }, year, month, day);
+        datePickerDialog.show();
+    }
+
+    public void showAlarmDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Alarm Note");
+        builder.setMessage("Alarm Date: "+dayAlarm+" "+hourAlarm);
+        builder.setCancelable(false);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                setAlarmNote();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
 
     }
 
+
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
 
     }
 }
