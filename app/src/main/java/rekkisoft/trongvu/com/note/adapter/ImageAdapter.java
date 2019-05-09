@@ -50,7 +50,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ImageAdapter.ViewHolder viewHolder, int i) {
         final String url = mUrlImage.get(i);
         final int position = i;
-        viewHolder.imView.setImageBitmap(DateUtils.stringToBitMap(url));
+        viewHolder.imView.setImageURI(Uri.parse(url));
         viewHolder.imView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

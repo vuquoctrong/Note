@@ -323,9 +323,9 @@ public class DetailActivity extends AppCompatActivity
                     final Uri imageUri = data.getData();
                     final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                     final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                    mURLImage.add(DateUtils.bitMapToString(selectedImage));
+                    //mURLImage.add(DateUtils.bitMapToString(selectedImage));
+                    mURLImage.add(imageUri.toString());
                     imageAdapter.setImages(mURLImage);
-                    detailPresenter.addImageNote(notes.get(currentPosition), mURLImage);
                     imageAdapter.notifyDataSetChanged();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -333,9 +333,8 @@ public class DetailActivity extends AppCompatActivity
                 }
             } else if (reqCode == Define.NavigationKey.CAMERA_PIC_REQUEST) {
                 Bitmap image = (Bitmap) data.getExtras().get("data");
-                mURLImage.add(DateUtils.bitMapToString(image));
+                mURLImage.add(DateUtils.getImageUri(this, image).toString());
                 imageAdapter.setImages(mURLImage);
-                detailPresenter.addImageNote(notes.get(currentPosition), mURLImage);
                 imageAdapter.notifyDataSetChanged();
             }
         } else {
@@ -362,6 +361,7 @@ public class DetailActivity extends AppCompatActivity
     private void updateNote() {
         detailPresenter.updateNote(notes.get(currentPosition), etTitleUpdate.getText().toString()
                 , etContentUpdate.getText().toString(), currentTime, false, colorNoteUpdate);
+        detailPresenter.addImageNote(notes.get(currentPosition), mURLImage);
         backHome();
 
     }
@@ -464,19 +464,6 @@ public class DetailActivity extends AppCompatActivity
         intent.setAction("android.intent.action.VIEW");
         intent.setDataAndType(Uri.parse(url), Define.NavigationKey.TYPE_IMAGE);
         startActivity(intent);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//
-//            Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-//            intent.setData(Uri.parse(url));
-//            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            startActivity(intent);
-//        } else {
-//
-//            Intent intent = new Intent(Intent.ACTION_VIEW);
-//            intent.setDataAndType(Uri.parse(url), Define.NavigationKey.TYPE_IMAGE);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//           startActivity(intent);
-//        }
     }
 
     private void addImageToCamera() {
@@ -486,7 +473,7 @@ public class DetailActivity extends AppCompatActivity
     }
 
     private void setAlarmNote() {
-        long timesInMillis = Utility.parseDateToMilisecond(dayAlarm+" "+hourAlarm);
+        long timesInMillis = Utility.parseDateToMilisecond(dayAlarm + " " + hourAlarm);
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, SchedulingService.class);
         intent.putExtra(Define.NavigationKey.KEY_TYPE, notes.get(currentPosition).getTitle());
@@ -507,21 +494,21 @@ public class DetailActivity extends AppCompatActivity
             switch (position) {
                 case 1:
                     dayAlarm = Utility.addDate(0);
-                    Define.NavigationKey.days[0]=dayAlarm;
+                    Define.NavigationKey.days[0] = dayAlarm;
                     mDayAdapter.notifyDataSetChanged();
-                    Toast.makeText(this,"Date Alarm: "+dayAlarm,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Date Alarm: " + dayAlarm, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
                     dayAlarm = Utility.addDate(1);
-                    Define.NavigationKey.days[0]=dayAlarm;
+                    Define.NavigationKey.days[0] = dayAlarm;
                     mDayAdapter.notifyDataSetChanged();
-                    Toast.makeText(this,"Date Alarm: "+dayAlarm,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Date Alarm: " + dayAlarm, Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
                     dayAlarm = Utility.addDate(2);
-                    Define.NavigationKey.days[0]=dayAlarm;
+                    Define.NavigationKey.days[0] = dayAlarm;
                     mDayAdapter.notifyDataSetChanged();
-                    Toast.makeText(this,"Date Alarm: "+dayAlarm,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Date Alarm: " + dayAlarm, Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
                     showDataPickerDiaLog();
@@ -535,25 +522,25 @@ public class DetailActivity extends AppCompatActivity
                     hourAlarm = Define.NavigationKey.hours[1];
                     Define.NavigationKey.hours[0] = hourAlarm;
                     mHourAdapter.notifyDataSetChanged();
-                    Toast.makeText(this,"Hour Alarm: "+hourAlarm,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Hour Alarm: " + hourAlarm, Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
                     hourAlarm = Define.NavigationKey.hours[2];
                     Define.NavigationKey.hours[0] = hourAlarm;
                     mHourAdapter.notifyDataSetChanged();
-                    Toast.makeText(this,"Hour Alarm: "+hourAlarm,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Hour Alarm: " + hourAlarm, Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
                     hourAlarm = Define.NavigationKey.hours[3];
                     Define.NavigationKey.hours[0] = hourAlarm;
                     mHourAdapter.notifyDataSetChanged();
-                    Toast.makeText(this,"Hour Alarm: "+hourAlarm,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Hour Alarm: " + hourAlarm, Toast.LENGTH_SHORT).show();
                     break;
                 case 4:
                     hourAlarm = Define.NavigationKey.hours[4];
                     Define.NavigationKey.hours[0] = hourAlarm;
                     mHourAdapter.notifyDataSetChanged();
-                    Toast.makeText(this,"Hour Alarm: "+hourAlarm,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Hour Alarm: " + hourAlarm, Toast.LENGTH_SHORT).show();
                     break;
                 case 5:
                     showTimePickerDialog();
@@ -592,7 +579,7 @@ public class DetailActivity extends AppCompatActivity
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 dayAlarm = dayOfMonth + "/" + monthOfYear + "/" + year;
-                Define.NavigationKey.days[0]=dayAlarm;
+                Define.NavigationKey.days[0] = dayAlarm;
                 mDayAdapter.notifyDataSetChanged();
 
             }
@@ -603,7 +590,7 @@ public class DetailActivity extends AppCompatActivity
     public void showAlarmDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Alarm Note");
-        builder.setMessage("Alarm Date: "+dayAlarm+" "+hourAlarm);
+        builder.setMessage("Alarm Date: " + dayAlarm + " " + hourAlarm);
         builder.setCancelable(false);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override

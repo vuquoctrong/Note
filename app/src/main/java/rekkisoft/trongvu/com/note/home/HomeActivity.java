@@ -34,7 +34,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        initPermission();
+        //initPermission();
         init();
     }
 
@@ -63,12 +63,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 requestPermissions(new String[]{Manifest.permission.CAMERA},
                         1);
+            }else if(checkCallingPermission(Manifest.permission.
+                    READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        2);
+            }else if(checkCallingPermission(Manifest.permission.
+                    WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        3);
             }
         }
-        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                2);
-        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                3);
     }
 
     @Override

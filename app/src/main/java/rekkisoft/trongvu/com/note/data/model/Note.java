@@ -31,6 +31,11 @@ public class Note extends RealmObject{
         color = Color.WHITE;
     }
 
+    public Note(Note note) {
+        isAlarm = false;
+        color = Color.WHITE;
+    }
+
     public int getId() {
         return id;
     }
