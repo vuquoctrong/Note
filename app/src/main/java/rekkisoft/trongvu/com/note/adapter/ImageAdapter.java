@@ -1,7 +1,6 @@
 package rekkisoft.trongvu.com.note.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +16,7 @@ import rekkisoft.trongvu.com.note.utils.DateUtils;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
 
+    //FIXME Không dùng context thì bỏ đi
     private Context context;
     private List<String> mUrlImage;
     private ImageOnClickListener imageOnClickListener;
@@ -29,6 +28,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     public void setImageOnclickListener(ImageOnClickListener imageOnclickListener) {
         this.imageOnClickListener = imageOnclickListener;
+        //FIXME set onclick thì không cần notifyDataSetChanged
         notifyDataSetChanged();
     }
 
@@ -42,6 +42,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public ImageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(R.layout.itemimage_activity, viewGroup, false);
+        //FIXME có thể viết thế này cho gọn return new ViewHolder(view);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -71,6 +72,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         return mUrlImage.size();
     }
 
+    //FIXME không nên đặt tên là ViewHolder, nên đổi thành ImageViewHolder hoặc ImageHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imView;
@@ -89,7 +91,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
         void onRemove(int position);
     }
-
 
 
 }
