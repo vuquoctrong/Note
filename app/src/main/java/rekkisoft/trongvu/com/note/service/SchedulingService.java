@@ -31,12 +31,13 @@ public class SchedulingService extends IntentService {
     private void createNotification(Intent intent) {
         /**Creates an explicit intent for an Activity in your app**/
         String index = intent.getStringExtra(Define.NavigationKey.KEY_TYPE);
+        int id = intent.getIntExtra(Define.NavigationKey.KEY_ID,0);
         Intent resultIntent = new Intent(this
                 , DetailActivity.class);
-        resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this,
-                0 /* Request code */, resultIntent,
+                id, resultIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder mBuilder = new Notification.Builder(this);
@@ -62,7 +63,8 @@ public class SchedulingService extends IntentService {
             mNotificationManager.createNotificationChannel(notificationChannel);
         }
         assert mNotificationManager != null;
-        mNotificationManager.notify(0 /* Request Code */, mBuilder.build());
+        mNotificationManager.notify(id, mBuilder.build());
     }
+
 }
 

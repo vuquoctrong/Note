@@ -114,7 +114,7 @@ public class DetailActivity extends AppCompatActivity
     private void init() {
 
 
-        imageAdapter = new ImageAdapter(this);
+        imageAdapter = new ImageAdapter();
         recyclerView = findViewById(R.id.recyclerImage);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -322,8 +322,6 @@ public class DetailActivity extends AppCompatActivity
                 try {
                     final Uri imageUri = data.getData();
                     final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                    //mURLImage.add(DateUtils.bitMapToString(selectedImage));
                     mURLImage.add(imageUri.toString());
                     imageAdapter.setImages(mURLImage);
                     imageAdapter.notifyDataSetChanged();
@@ -359,9 +357,9 @@ public class DetailActivity extends AppCompatActivity
     }
 
     private void updateNote() {
+        detailPresenter.addImageNote(notes.get(currentPosition), mURLImage);
         detailPresenter.updateNote(notes.get(currentPosition), etTitleUpdate.getText().toString()
                 , etContentUpdate.getText().toString(), currentTime, false, colorNoteUpdate);
-        detailPresenter.addImageNote(notes.get(currentPosition), mURLImage);
         backHome();
 
     }
@@ -454,7 +452,8 @@ public class DetailActivity extends AppCompatActivity
 
     @Override
     public void onRemove(int position) {
-        detailPresenter.removeImageNote(notes.get(currentPosition), position);
+        mURLImage.remove(position);
+        imageAdapter.setImages(mURLImage);
         imageAdapter.notifyDataSetChanged();
 
     }
@@ -477,7 +476,9 @@ public class DetailActivity extends AppCompatActivity
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, SchedulingService.class);
         intent.putExtra(Define.NavigationKey.KEY_TYPE, notes.get(currentPosition).getTitle());
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
+        intent.putExtra(Define.NavigationKey.KEY_ID,notes.get(currentPosition).getId());
+        PendingIntent pendingIntent = PendingIntent.getService(
+                this, notes.get(currentPosition).getId(), intent, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             alarmManager
                     .setExact(AlarmManager.RTC_WAKEUP, timesInMillis, pendingIntent);

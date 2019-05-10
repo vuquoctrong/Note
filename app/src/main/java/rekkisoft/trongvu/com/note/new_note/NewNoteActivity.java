@@ -76,7 +76,7 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void init() {
-        imageAdapter = new ImageAdapter(this);
+        imageAdapter = new ImageAdapter();
         recyclerView = findViewById(R.id.recyclerImage);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -155,6 +155,7 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
                 if (TextUtils.isEmpty(etTitle.getText()) || TextUtils.isEmpty(etContent.getText())) {
                     Toast.makeText(this, "Trước khi Lưu hãy nhập thông tin nhé", Toast.LENGTH_SHORT).show();
                 } else {
+                    newNotePresenter.addImageNote(note, mURLImage);
                     insertNote();
                 }
                 break;
@@ -185,9 +186,10 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
                     final Uri imageUri = data.getData();
                     final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                     final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                    mURLImage.add(DateUtils.bitMapToString(selectedImage));
+                    //mURLImage.add(DateUtils.bitMapToString(selectedImage));
+                    mURLImage.add(imageUri.toString());
                     imageAdapter.setImages(mURLImage);
-                    newNotePresenter.addImageNote(note, mURLImage);
+//                    newNotePresenter.addImageNote(note, mURLImage);
                     imageAdapter.notifyDataSetChanged();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -196,9 +198,8 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
 
             } else if (reqCode == Define.NavigationKey.CAMERA_PIC_REQUEST) {
                 Bitmap image = (Bitmap) data.getExtras().get("data");
-                mURLImage.add(DateUtils.bitMapToString(image));
+                mURLImage.add(DateUtils.getImageUri(this, image).toString());
                 imageAdapter.setImages(mURLImage);
-                newNotePresenter.addImageNote(note, mURLImage);
                 imageAdapter.notifyDataSetChanged();
             }
         } else {
@@ -285,12 +286,13 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClickItem(String url) {
-
+        previewImage(url);
     }
 
     @Override
     public void onRemove(int position) {
-        newNotePresenter.removeImageNote(note, position);
+        mURLImage.remove(position);
+        imageAdapter.setImages(mURLImage);
         imageAdapter.notifyDataSetChanged();
 
     }
@@ -300,4 +302,11 @@ public class NewNoteActivity extends AppCompatActivity implements View.OnClickLi
         startActivityForResult(cameraIntent, Define.NavigationKey.CAMERA_PIC_REQUEST);
 
     }
+    private void previewImage(String url) {
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        intent.setDataAndType(Uri.parse(url), Define.NavigationKey.TYPE_IMAGE);
+        startActivity(intent);
+    }
+
 }

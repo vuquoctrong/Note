@@ -1,6 +1,7 @@
 package rekkisoft.trongvu.com.note.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,22 +15,17 @@ import java.util.List;
 import rekkisoft.trongvu.com.note.R;
 import rekkisoft.trongvu.com.note.utils.DateUtils;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
 
-    //FIXME Không dùng context thì bỏ đi
-    private Context context;
     private List<String> mUrlImage;
     private ImageOnClickListener imageOnClickListener;
 
-    public ImageAdapter(Context context) {
-        this.context = context;
+    public ImageAdapter() {
         this.mUrlImage = new ArrayList<>();
     }
 
     public void setImageOnclickListener(ImageOnClickListener imageOnclickListener) {
         this.imageOnClickListener = imageOnclickListener;
-        //FIXME set onclick thì không cần notifyDataSetChanged
-        notifyDataSetChanged();
     }
 
     public void setImages(List<String> mUrlImage) {
@@ -39,16 +35,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     @NonNull
     @Override
-    public ImageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ImageAdapter.ImageViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(R.layout.itemimage_activity, viewGroup, false);
-        //FIXME có thể viết thế này cho gọn return new ViewHolder(view);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ImageViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ImageAdapter.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ImageAdapter.ImageViewHolder viewHolder, int i) {
         final String url = mUrlImage.get(i);
         final int position = i;
         viewHolder.imView.setImageURI(Uri.parse(url));
@@ -72,13 +66,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         return mUrlImage.size();
     }
 
-    //FIXME không nên đặt tên là ViewHolder, nên đổi thành ImageViewHolder hoặc ImageHolder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ImageViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imView;
         private ImageView imRemove;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
             imView = itemView.findViewById(R.id.itemImage);
             imRemove = itemView.findViewById(R.id.buttonRemove);
@@ -91,6 +84,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
         void onRemove(int position);
     }
+
 
 
 }

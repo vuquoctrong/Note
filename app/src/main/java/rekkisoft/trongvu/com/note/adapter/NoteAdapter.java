@@ -18,23 +18,18 @@ import rekkisoft.trongvu.com.note.R;
 import rekkisoft.trongvu.com.note.data.model.Note;
 import rekkisoft.trongvu.com.note.utils.Utility;
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
+public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
 
-    //FIXME Không dùng context thì bỏ đi
-    private Context context;
     private List<Note> notes;
     private NoteOnclickListener noteOnclickListener;
 
-    public NoteAdapter(Context context) {
-        this.context = context;
+    public NoteAdapter() {
         this.notes = new ArrayList<>();
 
     }
 
     public void setNoteOnclickListener(NoteOnclickListener noteOnclickListener){
         this.noteOnclickListener = noteOnclickListener;
-        //FIXME Không cần hàm này khi set onclick
-        notifyDataSetChanged();
 
     }
 
@@ -45,15 +40,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public NoteAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public NoteAdapter.NoteViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view =  inflater.inflate(R.layout.itemnote_activity,viewGroup,false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new NoteViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NoteAdapter.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull NoteAdapter.NoteViewHolder viewHolder, int i) {
         final Note note = notes.get(i);
         final int position = i;
         viewHolder.tvTitle.setText(note.getTitle());
@@ -73,17 +67,17 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         return notes.size();
     }
 
-    //FIXME đổi tên ViewHolder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class NoteViewHolder extends RecyclerView.ViewHolder {
 
-        //FIXME Khai báo riêng từng textview
-        TextView tvTitle,tvContent,tvDate;
+        TextView tvTitle;
+        TextView tvContent;
+        TextView tvDate;
         ImageView ivAlarms;
         RelativeLayout rlColorItem;
         CardView cvNote;
 
 
-        public ViewHolder(@NonNull View itemView) {
+        public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvContent = itemView.findViewById(R.id.tvContent);
